@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+			 xmlns:vm="using:FirstDemo.ViewModels"
+			 x:DataType="vm:MainViewModel"
+             x:Class="FirstDemo.Views.MainView">
+
+	<UserControl.Styles>
+		<Style Selector="Border#border:pointerover">
+			<Setter Property="Background" Value="AliceBlue"></Setter>
+			<!--<Setter Property="IsVisible" Value="False"></Setter>-->
+		</Style>
+	</UserControl.Styles>
+
+	<UserControl.DataContext>
+		<vm:MainViewModel />
+	</UserControl.DataContext>
+
+	<Grid ColumnDefinitions="100,100,100,100">
+		<Border Grid.Column="0" Width="100" Height="100" Background="Red" />
+
+		<Border x:Name="border" Width="100" Height="100" Grid.Column="1" Background="Blue">
+		</Border>
+
+		<Button Grid.Column="2" Content="{Binding Title}"></Button>
+
+		<Button Grid.Column="3" Background="Red" Content="button">
+		</Button>
+
+		<FlyoutPresenter IsVisible="{Binding #border.IsPointerOver}"  Content="sssssss" Height="100">
+			<Flyout Placement="Top" PlacementAnchor="{Binding #border}" ShowMode="Transient" OverlayDismissEventPassThrough="True">
+				<TextBlock Text="111111111" />
+			</Flyout>
+		</FlyoutPresenter>
+	</Grid>
+</UserControl>

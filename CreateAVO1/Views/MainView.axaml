@@ -1,0 +1,30 @@
+<UserControl
+    x:Class="AVOReactiveUI.Views.MainView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:AVOReactiveUI.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:MainViewModel"
+    mc:Ignorable="d">
+    <UserControl.DataContext>
+        <vm:MainViewModel />
+    </UserControl.DataContext>
+    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,*">
+        <TextBlock
+            x:Name="textBlock"
+            Grid.Row="0"
+            Grid.Column="1" />
+        <Button
+            x:Name="button"
+            Grid.Row="0"
+            Grid.Column="0" />
+        <UniformGrid
+            x:Name="uniformGrid"
+            Grid.Row="1"
+            Grid.Column="1"
+            Columns="3" />
+    </Grid>
+</UserControl>
