@@ -6,6 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using ReactiveUI;
 using System.Reactive;
+using Avalonia.ReactiveUI;
+using System.Diagnostics;
+using Avalonia.Threading;
+using ReactiveUI.SourceGenerators;
 
 namespace AVOReactiveUI.ViewModels
 {
@@ -23,18 +27,46 @@ namespace AVOReactiveUI.ViewModels
             get => time;
             set => this.RaiseAndSetIfChanged(ref time, value);
         }
+        [Reactive]
+        public Guid Id { set; get; }=Guid.NewGuid();
 
-        
-        public string Username { set;get;}
+        private string username;
+        public string Username
+        {
+            get => username;
+            set => this.RaiseAndSetIfChanged(ref username, value);
+        }
+        //[Reactive]
+        //public string Username { get; set; }
+
+        private string textGuid;
+        public string TextGuid
+        {
+            get => textGuid;
+            set => this.RaiseAndSetIfChanged(ref textGuid, value);
+        }
 
         public ReactiveCommand<Unit, Unit> ButtonCommand;
-
+        public ReactiveCommand<Guid,Unit> ShowGuidCommand { get; }
         public MainViewModel()
         {
             Time = DateTime.Now.ToString();
             ButtonCommand = ReactiveCommand.Create(() =>
             {
-                Time=DateTime.Now.ToString();
+                //if (RxApp.MainThreadScheduler is AvaloniaScheduler)
+                //{
+                //    Debug.WriteLine("调度器已正确绑定到 Avalonia UI 线程");
+                //}
+                //else
+                //{
+                //    throw new InvalidOperationException("ReactiveUI 调度器未初始化");
+                //}
+                Time = DateTime.Now.ToString();
+            });
+            ShowGuidCommand = ReactiveCommand.Create<Guid>(guid =>
+            {
+                TextGuid=guid.ToString();
+                Username = "lllllllllll";
             });
             
         }

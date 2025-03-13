@@ -11,8 +11,6 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
         InitializeComponent();
     }
-    // 必须声明 AvaloniaProperty 支持数据绑定
-    //public static readonly StyledProperty<MainWindowViewModel?> ViewModelProperty =
-    //    AvaloniaProperty.Register<MainWindow, MainWindowViewModel?>(nameof(ViewModel));
+
 
 }
