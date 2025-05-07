@@ -5,7 +5,7 @@ VisualStudioVersion = 17.10.35201.131
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstDemo", "FirstDemo\FirstDemo.csproj", "{D16A5C30-F95F-40B4-BCC1-B06208CD20A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVOReactvieUI", "CreateAVO1\AVOReactvieUI.csproj", "{0C4D66DD-8C39-404C-80B4-46DC364A8FD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVOReactvieUI", "AVOReactvieUI\AVOReactvieUI.csproj", "{0C4D66DD-8C39-404C-80B4-46DC364A8FD9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaApplication1", "AvaloniaApplication1\AvaloniaApplication1.csproj", "{BBEED3E3-702C-4D82-B28C-6C6842AA272D}"
 EndProject
