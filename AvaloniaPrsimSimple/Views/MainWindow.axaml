@@ -1,0 +1,29 @@
+<Window
+    Icon="/Assets/avalonia-logo.ico"
+    Title="AvaloniaPrsimSimple"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d"
+    x:Class="AvaloniaPrsimSimple.Views.MainWindow"
+    x:DataType="vm:MainWindowViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:AvaloniaPrsimSimple.Views"
+    xmlns:vm="using:AvaloniaPrsimSimple.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+
+    <TabControl>
+        <TabItem Header="MainWindow">
+            <views:MainView DataContext="{Binding MainViewModel}" />
+        </TabItem>
+        <TabItem Header="ToDoList">
+            <views:ToDoListUC DataContext="{Binding ToDoListViewModel}" />
+        </TabItem>
+        <TabItem Header="控件案例">
+            <views:ControlsCaseView DataContext="{Binding ControlsCaseViewModel}" />
+        </TabItem>
+    </TabControl>
+</Window>

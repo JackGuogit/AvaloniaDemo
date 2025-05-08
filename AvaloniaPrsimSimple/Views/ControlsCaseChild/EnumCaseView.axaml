@@ -1,0 +1,55 @@
+﻿<UserControl
+    x:Class="AvaloniaPrsimSimple.Views.EnumCaseView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:AvaloniaPrsimSimple.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:EnumCaseViewModel"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <vm:LightStatusToBrushConverter x:Key="LightStatusToBrushConverter" />
+    </UserControl.Resources>
+
+    <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto">
+        <Button
+            Grid.Row="0"
+            Grid.Column="0"
+            Width="60"
+            Height="40"
+            Command="{Binding ChangeLightStatusCommand}"
+            IsEnabled="True" />
+        <Button
+            Grid.Row="0"
+            Grid.Column="1"
+            Command="{Binding CancelOperationCommand}" />
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <!--  Light 1  -->
+            <Ellipse
+                Width="50"
+                Height="50"
+                Fill="{Binding Light1Status, Converter={StaticResource LightStatusToBrushConverter}}" />
+
+            <!--  Light 2  -->
+            <Ellipse
+                Width="50"
+                Height="50"
+                Fill="{Binding Light2Status, Converter={StaticResource LightStatusToBrushConverter}}" />
+
+            <!--  Light 3  -->
+            <Ellipse
+                Width="50"
+                Height="50"
+                Fill="{Binding Light3Status, Converter={StaticResource LightStatusToBrushConverter}}" />
+        </StackPanel>
+    </Grid>
+
+
+</UserControl>

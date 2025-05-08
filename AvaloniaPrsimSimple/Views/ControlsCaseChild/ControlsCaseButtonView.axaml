@@ -1,0 +1,33 @@
+﻿<UserControl
+    x:Class="AvaloniaPrsimSimple.Views.ControlsCaseButtonView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:AvaloniaPrsimSimple.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:ControlsCaseButtonViewModel"
+    mc:Ignorable="d">
+    <Grid ColumnDefinitions="Auto,Auto">
+        <StackPanel Grid.Column="0">
+            <Button Click="Button_OnClick" Content="Button" />
+            <ButtonSpinner Content="ButtonSpinner" />
+            <CalendarButton Content="CalendarButton" />
+            <!-- <CaptionButtons /> -->
+            <HyperlinkButton Content="HyperlinkButton" />
+            <RadioButton Content="RadioButton" />
+            <RepeatButton Content="RepeatButton" />
+            <SplitButton Content="SplitButton" />
+            <ToggleButton Content="ToggleButton" />
+            <CalendarDayButton Content="CalendarDayButton" />
+            <DropDownButton Content="DropDownButton" />
+            <ToggleSplitButton Content="ToggleSplitButton" />
+
+        </StackPanel>
+
+    </Grid>
+
+
+
+</UserControl>

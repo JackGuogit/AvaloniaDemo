@@ -1,0 +1,107 @@
+﻿<UserControl
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d"
+    x:Class="AvaloniaPrsimSimple.Views.MainView"
+    x:CompileBindings="True"
+    x:DataType="vm:MainViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:AvaloniaPrsimSimple.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <UserControl.Styles>
+        <Style Selector="Border.border1">
+            <Setter Property="Background" Value="Coral" />
+            <Style Selector="^:pointerover StackPanel">
+                <Setter Property="Background" Value="Fuchsia" />
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+
+
+        </Style>
+
+
+        <Style Selector="StackPanel#SP:pointerover">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+        <Style Selector="Button.DlStyle">
+            <Setter Property="CornerRadius" Value="15" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Width" Value="30" />
+
+        </Style>
+        <Style Selector="FlyoutPresenter.flyoutStyle">
+            <Setter Property="Background" Value="Transparent" />
+
+        </Style>
+    </UserControl.Styles>
+
+    <DockPanel>
+
+        <TextBlock
+            HorizontalAlignment="Center"
+            Text="{Binding Greeting, Mode=TwoWay}"
+            VerticalAlignment="Center" />
+        <Button Command="{Binding SetGreetCommand}" Content="Click" />
+
+        <Canvas
+            Background="Aquamarine"
+            DockPanel.Dock="Bottom"
+            Height="80"
+            Width="80" />
+        <Border
+            Classes="border1"
+            Height="80"
+            PointerEntered="InputElement_OnPointerEntered"
+            Width="80">
+            <!--  <StackPanel  -->
+            <!--  Background="Black"  -->
+            <!--  IsVisible="False"  -->
+            <!--  Orientation="Horizontal"  -->
+            <!--  x:Name="SP">  -->
+            <!--     <Button Classes="DlStyle" Content="设置" /> -->
+            <!--     <Button Classes="DlStyle" Content="执行" /> -->
+            <!--     <Button Classes="DlStyle" Content="终止" /> -->
+            <!--     <Button Classes="DlStyle" Content="撤销" /> -->
+            <!--     <Button Classes="DlStyle" Content="搜索" /> -->
+            <!-- </StackPanel> -->
+            <FlyoutBase.AttachedFlyout>
+
+                <Flyout
+                    FlyoutPresenterClasses="flyoutStyle"
+                    Placement="Top"
+                    PlacementAnchor="Top"
+                    ShowMode="TransientWithDismissOnPointerMoveAway">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Classes="DlStyle" Content="设置" />
+                        <Button Classes="DlStyle" Content="执行" />
+                        <Button Classes="DlStyle" Content="终止" />
+                        <Button Classes="DlStyle" Content="撤销" />
+                        <Button Classes="DlStyle" Content="搜索" />
+                    </StackPanel>
+                </Flyout>
+            </FlyoutBase.AttachedFlyout>
+        </Border>
+        <Canvas
+            Background="Beige"
+            Height="40"
+            Width="40" />
+        <Rectangle
+            Fill="Aqua"
+            Height="200"
+            ToolTip.Placement="Top"
+            Width="400">
+            <ToolTip.Tip>
+                <StackPanel Orientation="Horizontal">
+                    <Button Classes="DlStyle" Content="设置" />
+                    <Button Classes="DlStyle" Content="执行" />
+                    <Button Classes="DlStyle" Content="终止" />
+                    <Button Classes="DlStyle" Content="撤销" />
+                    <Button Classes="DlStyle" Content="搜索" />
+                </StackPanel>
+            </ToolTip.Tip>
+        </Rectangle>
+    </DockPanel>
+</UserControl>

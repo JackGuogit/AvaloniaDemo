@@ -1,0 +1,40 @@
+﻿<UserControl
+    x:Class="AvaloniaPrsimSimple.Views.ControlsCaseView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:AvaloniaPrsimSimple.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:ControlsCaseViewModel"
+    mc:Ignorable="d">
+    <Grid ColumnDefinitions="Auto,*" ShowGridLines="True">
+        <StackPanel Orientation="Vertical">
+            <Button Command="{Binding SelectCommand}" Content="按钮案例">
+                <Button.CommandParameter>
+                    <vm:ControlsCaseButtonViewModel />
+                </Button.CommandParameter>
+            </Button>
+            <Button Command="{Binding SelectCommand}" Content="DragDrop">
+                <Button.CommandParameter>
+                    <vm:DragDropViewModel />
+                </Button.CommandParameter>
+            </Button>
+            <Button Command="{Binding SelectCommand}" Content="Text相关案例">
+                <Button.CommandParameter>
+                    <vm:TextViewModel />
+                </Button.CommandParameter>
+            </Button>
+            <Button Command="{Binding SelectCommand}" Content="枚举">
+                <Button.CommandParameter>
+                    <vm:EnumCaseViewModel />
+                </Button.CommandParameter>
+            </Button>
+        </StackPanel>
+        <TransitioningContentControl Grid.Column="1" Content="{Binding SelectedViewModel}" />
+
+    </Grid>
+
+
+</UserControl>
