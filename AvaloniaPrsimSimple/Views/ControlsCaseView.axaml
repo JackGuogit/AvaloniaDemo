@@ -31,6 +31,11 @@
                     <vm:EnumCaseViewModel />
                 </Button.CommandParameter>
             </Button>
+            <Button Command="{Binding SelectCommand}" Content="拖入文件实例">
+                <Button.CommandParameter>
+                    <vm:DragDropFilesViewModel />
+                </Button.CommandParameter>
+            </Button>
         </StackPanel>
         <TransitioningContentControl Grid.Column="1" Content="{Binding SelectedViewModel}" />
 

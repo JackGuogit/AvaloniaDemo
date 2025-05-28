@@ -15,7 +15,10 @@
         <vm:MainViewModel />
     </Design.DataContext>
 
-    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,*">
+    <Grid
+        Background="AliceBlue"
+        ColumnDefinitions="Auto,*"
+        RowDefinitions="Auto,*">
         <TextBlock
             x:Name="textBlock"
             Grid.Row="0"
