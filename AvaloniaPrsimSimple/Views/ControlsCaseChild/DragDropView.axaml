@@ -1,14 +1,14 @@
 ﻿<UserControl
-    d:DesignHeight="450"
-    d:DesignWidth="800"
-    mc:Ignorable="d"
     x:Class="AvaloniaPrsimSimple.Views.DragDropView"
-    x:DataType="vm:DragDropViewModel"
     xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:AvaloniaPrsimSimple.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:DragDropViewModel"
+    mc:Ignorable="d">
 
     <UserControl.Styles>
         <!--  Base style for the Border  -->
@@ -49,74 +49,74 @@
 
     <Grid ColumnDefinitions="Auto,Auto,Auto" ShowGridLines="True">
         <Border
-            Background="LightGray"
-            Margin="10"
             Name="MyBorder"
-            Padding="10">
+            Margin="10"
+            Padding="10"
+            Background="LightGray">
             <TextBlock Text="鼠标移入这里会弹出Popup" />
         </Border>
 
         <Popup
+            Name="MyPopup"
             Grid.Column="1"
             IsOpen="False"
-            Name="MyPopup"
             OverlayDismissEventPassThrough="True"
             Placement="Top"
             PlacementTarget="{Binding ElementName=MyBorder}"
             VerticalOffset="50">
             <TextBlock
-                Background="LightBlue"
                 Padding="10"
+                Background="LightBlue"
                 Text="这是一个弹出框" />
         </Popup>
 
         <Canvas>
             <Canvas
-                Background="Aqua"
-                Grid.Column="2"
-                Height="400"
                 Name="MyCanvas"
-                Width="400">
+                Grid.Column="2"
+                Width="400"
+                Height="400"
+                Background="Aqua">
                 <Border
-                    Background="LightGray"
-                    Height="30"
                     Name="DraggableBorder"
-                    Width="100">
+                    Width="100"
+                    Height="30"
+                    Background="LightGray">
                     <TextBlock
                         HorizontalAlignment="Center"
-                        Text="拖动我"
-                        VerticalAlignment="Center" />
+                        VerticalAlignment="Center"
+                        Text="拖动我" />
                 </Border>
                 <Border
-                    Background="LightBlue"
+                    x:Name="PopupBorder"
                     Canvas.Left="100"
                     Canvas.Top="50"
-                    IsVisible="False"
                     Width="{Binding ElementName=Part_TextBox, Path=Width, Mode=TwoWay}"
-                    x:Name="PopupBorder">
+                    Background="LightBlue"
+                    IsVisible="False">
                     <TextBox
+                        x:Name="Part_TextBox"
                         Background="Transparent"
                         BorderThickness="0"
                         SizeChanged="Part_TextBox_OnSizeChanged"
                         Text="4sf54a3s"
-                        Watermark="add comment"
-                        x:Name="Part_TextBox" />
+                        Watermark="add comment" />
                 </Border>
 
                 <Popup
+                    x:Name="PART_Popup"
                     HorizontalOffset="100"
                     IsOpen="True"
-                    PlacementAnchor="Top"
-                    PlacementTarget="DraggableBorder"
-                    x:Name="PART_Popup">
+                    PlacementAnchor="Bottom"
+                    PlacementTarget="DraggableBorder">
                     <TextBlock Text="sssssssssssss" />
                 </Popup>
             </Canvas>
             <Canvas
-                Background="Blue"
                 Canvas.Left="200"
+                Width="100"
                 Height="100"
-                Width="100" />
+                Background="Blue" />
         </Canvas>
     </Grid>
 </UserControl>

@@ -18,7 +18,13 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Background="Gray"
-            DragDrop.AllowDrop="True">
+            DragDrop.AllowDrop="True"
+            PointerPressed="Border_PointerPressed">
+            <FlyoutBase.AttachedFlyout>
+                <Flyout>
+                    <TextBlock Text="红色矩形弹出层" />
+                </Flyout>
+            </FlyoutBase.AttachedFlyout>
             <Interaction.Behaviors>
                 <RoutedEventTriggerBehavior RoutedEvent="{x:Static DragDrop.DropEvent}">
                     <InvokeCommandAction Command="{Binding GetDragDropFilesCommand}" PassEventArgsToCommand="True" />
