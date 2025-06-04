@@ -36,6 +36,11 @@
                     <vm:DragDropFilesViewModel />
                 </Button.CommandParameter>
             </Button>
+            <Button Command="{Binding SelectCommand}" Content="DataGrid">
+                <Button.CommandParameter>
+                    <vm:DataGridDemoViewModel />
+                </Button.CommandParameter>
+            </Button>
         </StackPanel>
         <TransitioningContentControl Grid.Column="1" Content="{Binding SelectedViewModel}" />
 
