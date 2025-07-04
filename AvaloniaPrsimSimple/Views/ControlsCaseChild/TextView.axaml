@@ -29,7 +29,6 @@
     <UniformGrid>
         <TextBlock
             x:Name="Part_TextBox"
-            Width="80"
             Height="20"
             Text="DoubleClick">
             <Interaction.Behaviors>
@@ -39,7 +38,6 @@
             </Interaction.Behaviors>
         </TextBlock>
         <TextBox
-            Width="80"
             Height="20"
             BorderThickness="0"
             IsReadOnly="False"
