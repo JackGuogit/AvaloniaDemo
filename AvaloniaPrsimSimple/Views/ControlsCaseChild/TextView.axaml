@@ -1,14 +1,14 @@
 ﻿<UserControl
-    d:DesignHeight="450"
-    d:DesignWidth="800"
-    mc:Ignorable="d"
     x:Class="AvaloniaPrsimSimple.Views.TextView"
-    x:DataType="vm:TextViewModel"
     xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:AvaloniaPrsimSimple.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:TextViewModel"
+    mc:Ignorable="d">
 
 
     <UserControl.Styles>
@@ -27,14 +27,25 @@
     </UserControl.Styles>
 
     <UniformGrid>
-        <TextBox
-            BorderThickness="0"
+        <TextBlock
+            x:Name="Part_TextBox"
+            Width="80"
             Height="20"
-            
+            Text="DoubleClick">
+            <Interaction.Behaviors>
+                <EventTriggerBehavior EventName="DoubleTapped">
+                    <InvokeCommandAction Command="{Binding ChangeTextCommand}" PassEventArgsToCommand="True" />
+                </EventTriggerBehavior>
+            </Interaction.Behaviors>
+        </TextBlock>
+        <TextBox
+            Width="80"
+            Height="20"
+            BorderThickness="0"
             IsReadOnly="False"
             Text="{Binding Text}"
-            Watermark="add comment"
-            Width="80"
-            x:Name="Part_TextBox" />
+            Watermark="add comment" />
+
+
     </UniformGrid>
 </UserControl>

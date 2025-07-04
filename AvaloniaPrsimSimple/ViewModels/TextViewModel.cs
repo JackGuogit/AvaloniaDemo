@@ -1,7 +1,14 @@
-﻿namespace AvaloniaPrsimSimple.ViewModels;
+﻿using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Windows.Input;
+
+namespace AvaloniaPrsimSimple.ViewModels;
 
 public class TextViewModel:ViewModelBase
 {
+
+    public ICommand ChangeTextCommand { get; }
+
     private string _text = "Welcome to Avalonia!";
     public string Text {
         get
@@ -16,4 +23,13 @@ public class TextViewModel:ViewModelBase
         
     }
 
+    public TextViewModel()
+    {
+        ChangeTextCommand = new RelayCommand(ChangeText);
+    }
+    int i = 0;
+    private void ChangeText()
+    {
+        Text = "sssss" + i++;
+    }
 }
