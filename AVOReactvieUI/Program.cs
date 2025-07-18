@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
 using AVOReactiveUI.ViewModels;
-using AVOReactvieUI;
+using AVOReactiveUI;
 using ReactiveUI;
 using Splat;
 using System;

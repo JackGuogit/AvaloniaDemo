@@ -1,0 +1,42 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:AvaloniaPrsimSimple">
+
+    <!--
+        Additional resources
+        Using Control Themes:
+        https://docs.avaloniaui.net/docs/basics/user-interface/styling/control-themes
+        Using Theme Variants:
+        https://docs.avaloniaui.net/docs/guides/styles-and-resources/how-to-use-theme-variants
+    -->
+
+    <Design.PreviewWith>
+        <StackPanel Width="400" Spacing="10">
+            <StackPanel Background="{DynamicResource SystemRegionBrush}">
+                <controls:RenamePopupControl />
+            </StackPanel>
+        </StackPanel>
+    </Design.PreviewWith>
+
+    <ControlTheme x:Key="{x:Type controls:RenamePopupControl}" TargetType="controls:RenamePopupControl">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Popup IsOpen="{TemplateBinding IsOpen}">
+                    <Border
+                        Padding="10"
+                        Background="White"
+                        CornerRadius="4">
+                        <StackPanel Spacing="6">
+                            <TextBox x:Name="PART_Input" Text="{TemplateBinding CurrentName}" />
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button x:Name="PART_Confirm" Content="确定" />
+                                <Button x:Name="PART_Cancel" Content="取消" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

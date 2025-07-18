@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AVOReactvieUI
+namespace AVOReactiveUI
 {
     public class ReactiveUIViewLocator: IViewLocator
     {

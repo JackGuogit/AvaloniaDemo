@@ -30,13 +30,35 @@
         <TextBlock
             x:Name="Part_TextBox"
             Height="20"
+            HorizontalAlignment="Center"
             Text="DoubleClick">
             <Interaction.Behaviors>
                 <EventTriggerBehavior EventName="DoubleTapped">
                     <InvokeCommandAction Command="{Binding ChangeTextCommand}" PassEventArgsToCommand="True" />
                 </EventTriggerBehavior>
             </Interaction.Behaviors>
+
         </TextBlock>
+        <Popup
+            x:Name="Part_Popup"
+            IsOpen="False"
+			PlacementTarget="{Binding #Part_TextBox}"
+            Placement="Center">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Content="✓" IsVisible="{Binding #Part_Popup.IsOpen}">
+                        <Interaction.Behaviors>
+                            <EventTriggerBehavior EventName="Click">
+                                <ChangePropertyAction PropertyName="{Binding #Part_Popup.IsOpen}" Value="False" />
+                            </EventTriggerBehavior>
+                        </Interaction.Behaviors>
+
+                    </Button>
+                    <Button Content="×" />
+                </StackPanel>
+                <TextBox Text="{Binding Text}" />
+            </StackPanel>
+        </Popup>
         <TextBox
             Height="20"
             BorderThickness="0"

@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactvieui="http://reactiveui.net"
+    xmlns:view="clr-namespace:AVOReactiveUI.Views;assembly=AVOReactiveUI"
     xmlns:vm="using:AVOReactiveUI.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -15,10 +16,7 @@
         <vm:MainViewModel />
     </Design.DataContext>
 
-    <Grid
-        Background="AliceBlue"
-        ColumnDefinitions="Auto,*"
-        RowDefinitions="Auto,*">
+    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,*">
         <TextBlock
             x:Name="textBlock"
             Grid.Row="0"
@@ -42,6 +40,8 @@
                 CommandParameter="{Binding Id}" />
             <TextBlock Text="{Binding TextGuid, Mode=TwoWay}" />
             <TextBlock Text="{Binding Username, Mode=TwoWay}" />
+            <view:RenamePopupUCView />
         </UniformGrid>
+
     </Grid>
 </UserControl>

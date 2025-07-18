@@ -6,7 +6,7 @@ using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using AVOReactiveUI.ViewModels;
 using AVOReactiveUI.Views;
-using AVOReactvieUI;
+using AVOReactiveUI;
 using ReactiveUI;
 using Splat;
 

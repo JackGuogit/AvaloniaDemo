@@ -32,6 +32,9 @@
         <PackageReference Include="Xaml.Behaviors.Interactivity" Version="11.3.0.8" />
     </ItemGroup>
     <ItemGroup>
+      <Compile Update="Themes\RenamePopupControl.axaml.cs">
+        <DependentUpon>RenamePopupControl.axaml</DependentUpon>
+      </Compile>
       <Compile Update="Views\ControlsCaseChild\DataGridDemoView.axaml.cs">
         <DependentUpon>DataGridDemoView.axaml</DependentUpon>
       </Compile>

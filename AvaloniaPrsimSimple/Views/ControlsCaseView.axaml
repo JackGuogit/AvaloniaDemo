@@ -11,7 +11,7 @@
     x:DataType="vm:ControlsCaseViewModel"
     mc:Ignorable="d">
     <Grid ColumnDefinitions="Auto,*" ShowGridLines="True">
-        <StackPanel Orientation="Vertical" Spacing="10">
+        <ctrl:StackPanelEx Orientation="Vertical" Spacing="20">
             <Button Command="{Binding SelectCommand}" Content="按钮案例">
                 <Button.CommandParameter>
                     <vm:ControlsCaseButtonViewModel />
@@ -42,8 +42,9 @@
                     <vm:DataGridDemoViewModel />
                 </Button.CommandParameter>
             </Button>
-        </StackPanel>
+        </ctrl:StackPanelEx>
         <TransitioningContentControl Grid.Column="1" Content="{Binding SelectedViewModel}" />
+
 
     </Grid>
 
