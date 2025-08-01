@@ -3,6 +3,8 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using AvoElsaWorkflowDemo.ViewModels;
 using AvoElsaWorkflowDemo.Views;
+using Microsoft.Extensions.DependencyInjection;
+using Splat;
 
 namespace AvoElsaWorkflowDemo
 {
@@ -25,6 +27,21 @@ namespace AvoElsaWorkflowDemo
 
             base.OnFrameworkInitializationCompleted();
         }
+
+        public override void RegisterServices()
+        {
+            IServiceCollection serviceDescriptors = new ServiceCollection();
+
+            ApplicationBuilder applicationBuilder= new ApplicationBuilder(serviceDescriptors);
+            System.IServiceProvider serviceProvider = applicationBuilder.Build();
+
+
+            Locator.CurrentMutable.RegisterLazySingleton(() => serviceProvider);
+
+
+            base.RegisterServices();
+        }
+
 
     }
 }
