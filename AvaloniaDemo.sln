@@ -21,6 +21,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkflowCore", "WorkflowCor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvoElsaWorkflowDemo", "AvoElsaWorkflowDemo\AvoElsaWorkflowDemo.csproj", "{06F38A9D-A11C-44F4-AA0E-D1329640079E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cross", "Cross", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaCross", "AvaloniaCross\AvaloniaCross\AvaloniaCross.csproj", "{8B4DD501-7F4D-45CA-9A8A-1F6B579302F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaCross.Android", "AvaloniaCross\AvaloniaCross.Android\AvaloniaCross.Android.csproj", "{4B7D07B6-3E1C-43C9-8852-A117F86B1703}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaCross.Desktop", "AvaloniaCross\AvaloniaCross.Desktop\AvaloniaCross.Desktop.csproj", "{52DC37EF-0FF6-455D-AAC4-89C347C153CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaCross.iOS", "AvaloniaCross\AvaloniaCross.iOS\AvaloniaCross.iOS.csproj", "{D0BD3EC1-6FF2-48B5-98EE-8C36022C78C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaCross.Browser", "AvaloniaCross\AvaloniaCross.Browser\AvaloniaCross.Browser.csproj", "{94300634-F7AD-42AD-924A-3D6CD2EB5026}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,9 +75,40 @@ Global
 		{06F38A9D-A11C-44F4-AA0E-D1329640079E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06F38A9D-A11C-44F4-AA0E-D1329640079E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06F38A9D-A11C-44F4-AA0E-D1329640079E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B4DD501-7F4D-45CA-9A8A-1F6B579302F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B4DD501-7F4D-45CA-9A8A-1F6B579302F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B4DD501-7F4D-45CA-9A8A-1F6B579302F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B4DD501-7F4D-45CA-9A8A-1F6B579302F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B7D07B6-3E1C-43C9-8852-A117F86B1703}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B7D07B6-3E1C-43C9-8852-A117F86B1703}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B7D07B6-3E1C-43C9-8852-A117F86B1703}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{4B7D07B6-3E1C-43C9-8852-A117F86B1703}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B7D07B6-3E1C-43C9-8852-A117F86B1703}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B7D07B6-3E1C-43C9-8852-A117F86B1703}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{52DC37EF-0FF6-455D-AAC4-89C347C153CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52DC37EF-0FF6-455D-AAC4-89C347C153CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52DC37EF-0FF6-455D-AAC4-89C347C153CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52DC37EF-0FF6-455D-AAC4-89C347C153CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0BD3EC1-6FF2-48B5-98EE-8C36022C78C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0BD3EC1-6FF2-48B5-98EE-8C36022C78C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0BD3EC1-6FF2-48B5-98EE-8C36022C78C6}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D0BD3EC1-6FF2-48B5-98EE-8C36022C78C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0BD3EC1-6FF2-48B5-98EE-8C36022C78C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0BD3EC1-6FF2-48B5-98EE-8C36022C78C6}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{94300634-F7AD-42AD-924A-3D6CD2EB5026}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94300634-F7AD-42AD-924A-3D6CD2EB5026}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94300634-F7AD-42AD-924A-3D6CD2EB5026}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94300634-F7AD-42AD-924A-3D6CD2EB5026}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8B4DD501-7F4D-45CA-9A8A-1F6B579302F9} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{4B7D07B6-3E1C-43C9-8852-A117F86B1703} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{52DC37EF-0FF6-455D-AAC4-89C347C153CE} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{D0BD3EC1-6FF2-48B5-98EE-8C36022C78C6} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{94300634-F7AD-42AD-924A-3D6CD2EB5026} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C216E8AD-98D9-4C7D-87A8-7B81857A0EBF}
