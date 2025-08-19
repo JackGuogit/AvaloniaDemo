@@ -41,5 +41,8 @@
       <Compile Update="Views\ControlsCaseChild\DragDropFilesView.axaml.cs">
         <DependentUpon>DragDropFilesView.axaml</DependentUpon>
       </Compile>
+      <Compile Update="Views\ControlsCaseChild\TestExStackPanelView.axaml.cs">
+        <DependentUpon>TestExStackPanelView.axaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 </Project>

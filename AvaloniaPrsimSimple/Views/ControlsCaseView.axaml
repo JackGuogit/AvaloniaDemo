@@ -42,6 +42,11 @@
                     <vm:DataGridDemoViewModel />
                 </Button.CommandParameter>
             </Button>
+            <Button Command="{Binding SelectCommand}" Content="ExStackPanel">
+                <Button.CommandParameter>
+                    <vm:TestExStackPanelViewModel />
+                </Button.CommandParameter>
+            </Button>
         </ctrl:StackPanelEx>
         <TransitioningContentControl Grid.Column="1" Content="{Binding SelectedViewModel}" />
 
