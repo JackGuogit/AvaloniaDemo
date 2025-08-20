@@ -106,72 +106,7 @@ namespace AvaloniaPrsimSimple.Controls
         }
 
 
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            Size stackDesiredSize = new Size();
-            var children = Children;
-            Size layoutSlotSize = availableSize;
-            bool fHorizontal = (Orientation == Avalonia.Layout.Orientation.Horizontal);
-            double spacing = Spacing;
-            bool hasVisibleChild = false;
 
-            //
-            // Initialize child sizing and iterator data
-            // Allow children as much size as they want along the stack.
-            //
-            if (fHorizontal)
-            {
-                layoutSlotSize = layoutSlotSize.WithWidth(Double.PositiveInfinity);
-            }
-            else
-            {
-                layoutSlotSize = layoutSlotSize.WithHeight(Double.PositiveInfinity);
-            }
-
-            //
-            //  Iterate through children.
-            //  While we still supported virtualization, this was hidden in a child iterator (see source history).
-            //
-            for (int i = 0, count = children.Count; i < count; ++i)
-            {
-                // Get next child.
-                var child = children[i];
-
-                bool isVisible = child.IsVisible;
-
-                if (isVisible && !hasVisibleChild)
-                {
-                    hasVisibleChild = true;
-                }
-
-                // Measure the child.
-                child.Measure(layoutSlotSize);
-                Size childDesiredSize = child.DesiredSize;
-
-                // Accumulate child size.
-                if (fHorizontal)
-                {
-                    stackDesiredSize = stackDesiredSize.WithWidth(stackDesiredSize.Width + (isVisible ? spacing : 0) + childDesiredSize.Width);
-                    stackDesiredSize = stackDesiredSize.WithHeight(Math.Max(stackDesiredSize.Height, childDesiredSize.Height));
-                }
-                else
-                {
-                    stackDesiredSize = stackDesiredSize.WithWidth(Math.Max(stackDesiredSize.Width, childDesiredSize.Width));
-                    stackDesiredSize = stackDesiredSize.WithHeight(stackDesiredSize.Height + (isVisible ? spacing : 0) + childDesiredSize.Height);
-                }
-            }
-
-            if (fHorizontal)
-            {
-                stackDesiredSize = stackDesiredSize.WithWidth(stackDesiredSize.Width - (hasVisibleChild ? spacing : 0));
-            }
-            else
-            {
-                stackDesiredSize = stackDesiredSize.WithHeight(stackDesiredSize.Height - (hasVisibleChild ? spacing : 0));
-            }
-
-            return stackDesiredSize;
-        }
 
 
     }
