@@ -47,6 +47,11 @@
                     <vm:TestExStackPanelViewModel />
                 </Button.CommandParameter>
             </Button>
+            <Button Command="{Binding SelectCommand}" Content="Animation">
+                <Button.CommandParameter>
+                    <vm:AnimationDemoViewModel />
+                </Button.CommandParameter>
+            </Button>
         </ctrl:StackPanelEx>
         <TransitioningContentControl Grid.Column="1" Content="{Binding SelectedViewModel}" />
 
