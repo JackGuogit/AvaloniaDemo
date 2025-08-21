@@ -16,7 +16,7 @@
             BorderThickness="5"
             CornerRadius="10">
             <Border.BorderBrush>
-                <LinearGradientBrush StartPoint="50%,0%" EndPoint="50%,100%">
+                <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
                     <LinearGradientBrush.GradientStops>
                         <GradientStop Offset="0" Color="Red" />
                         <!--<GradientStop Offset="0.5" Color="Green" />-->
@@ -25,5 +25,9 @@
                 </LinearGradientBrush>
             </Border.BorderBrush>
         </Border>
+        <StackPanel>
+            <Button Click="StopAnimation" Content="停止动画" />
+            <Button Click="StartAnimation" Content="开始动画" />
+        </StackPanel>
     </Panel>
 </UserControl>

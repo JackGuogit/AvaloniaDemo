@@ -7,11 +7,18 @@ using Avalonia.Media;
 using Avalonia.Styling;
 using AvaloniaPrsimSimple.Helpers;
 using System;
+using System.Threading;
 
 namespace AvaloniaPrsimSimple.Views;
 
 public partial class AnimationDemoView : UserControl
 {
+
+    CancellationTokenSource cts ;
+
+    Animation anim = new Animation() { Duration = TimeSpan.FromSeconds(2), IterationCount = IterationCount.Infinite };
+
+
     public AnimationDemoView()
     {
         InitializeComponent();
@@ -46,19 +53,20 @@ public partial class AnimationDemoView : UserControl
             EndPoint = new RelativePoint(1, 1, RelativeUnit.Relative)
         };
 
-        var color0 = ColorToHexConverter.ParseHexString("#5ddcff", AlphaComponentPosition.Leading)!.Value;
-        var color1 = ColorToHexConverter.ParseHexString("#3c67e3", AlphaComponentPosition.Leading)!.Value;
-        var color2 = ColorToHexConverter.ParseHexString("#4e00c2", AlphaComponentPosition.Leading)!.Value;
+        //var color0 = ColorToHexConverter.ParseHexString("#5ddcff", AlphaComponentPosition.Leading)!.Value;
+        //var color1 = ColorToHexConverter.ParseHexString("#3c67e3", AlphaComponentPosition.Leading)!.Value;
+        //var color2 = ColorToHexConverter.ParseHexString("#4e00c2", AlphaComponentPosition.Leading)!.Value;
 
-        var gradientStop0 = new GradientStop(color0, 0);
-        var gradientStop1 = new GradientStop(color1, 0.43);
-        var gradientStop2 = new GradientStop(color2, 1);
+        //var gradientStop0 = new GradientStop(color0, 0);
+        //var gradientStop1 = new GradientStop(color1, 0.43);
+        //var gradientStop2 = new GradientStop(color2, 1);
 
-        gradientBrush.GradientStops.AddRange([gradientStop0, gradientStop1, gradientStop2]);
+        //gradientBrush.GradientStops.AddRange([gradientStop0, gradientStop1, gradientStop2]);
 
-        PART_Border.BorderBrush = gradientBrush;
+        //PART_Border.BorderBrush = gradientBrush;
 
-        var anim = new Animation() { Duration = TimeSpan.FromSeconds(2), IterationCount = IterationCount.Infinite };
+
+
 
         var keyframe0 = new KeyFrame() { Cue = new Cue(0) };
         keyframe0.Setters.Add(new Setter(LinearGradientBrushHelper.RotateAngleProperty, 0d));
@@ -68,19 +76,24 @@ public partial class AnimationDemoView : UserControl
         anim.Children.Add(keyframe0);
         anim.Children.Add(keyframe1);
 
-        anim.RunAsync(PART_Border);
-
-        
 
 
 
 
 
+    }
+
+    private void StopAnimation(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        cts.Cancel();
+    }
+
+    private void StartAnimation(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        cts = new CancellationTokenSource();
 
 
-
-
-
+        anim.RunAsync(PART_Border, cts.Token);
 
     }
 }
