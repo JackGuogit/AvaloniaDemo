@@ -37,7 +37,7 @@
                 ItemsSource="{Binding StackPanelItems}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <ctrl:StackPanelEx Spacing="20" />
+                        <ctrl:StackPanelEx />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
 

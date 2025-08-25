@@ -47,8 +47,48 @@ namespace AvaloniaPrsimSimple.Controls
                 double x = (finalSize.Width - childSize.Width) / 2;
                 double y = (finalSize.Height - childSize.Height) / 2;
 
+
+                double currentY = child.Bounds.Y;
+                var animation = new Animation
+                {
+                    Duration = TimeSpan.FromSeconds(0.1),
+                    Children =
+                        {
+                            new KeyFrame
+                            {
+                                Setters =
+                                {
+
+                                                                       new Setter(TranslateTransform.YProperty, -y)
+                                },
+                                Cue = new Cue(0)
+                            },
+
+                            new KeyFrame
+                            {
+                                Setters =
+                                {
+
+                                                                        new Setter(TranslateTransform.YProperty,currentY)
+                                },
+                                Cue = new Cue(1)
+                            }
+                        }
+                };
+
+
+                if (child.Bounds.Y == 0)
+                {
+
+
+                    animation.RunAsync(child);
+                }
+
+
                 Rect rect = new Rect(x, y, childSize.Width, childSize.Height);
+
                 child.Arrange(rect);
+
             }
             else if (childCount == 2)
             {
@@ -62,7 +102,7 @@ namespace AvaloniaPrsimSimple.Controls
                 double y2 = finalSize.Height - secondChildSize.Height;
 
 
-                secondChild.Arrange(new Rect((finalSize.Width - secondChildSize.Width) / 2, y2, secondChildSize.Width, secondChildSize.Height));
+
 
 
                 if (firstChild.RenderTransform is not TranslateTransform transform)
@@ -96,9 +136,44 @@ namespace AvaloniaPrsimSimple.Controls
                         }
                     }
                 };
+
+
+
                 firstChild.Arrange(new Rect((finalSize.Width - firstChildSize.Width) / 2, y1, firstChildSize.Width, firstChildSize.Height));
                 animation.RunAsync(firstChild);
 
+
+                if(secondChild.Bounds.Y<y2)
+                {
+                    var anim=new Animation
+                    {
+                        Duration = TimeSpan.FromSeconds(0.1),
+                        Children =
+                        {
+                            new KeyFrame
+                            {
+                                Setters =
+                                {
+
+                                    new Setter(TranslateTransform.YProperty, -secondChild.Bounds.Y)
+                                },
+                                Cue = new Cue(0)
+                            },
+
+                            new KeyFrame
+                            {
+                                Setters =
+                                {
+                                    new Setter(TranslateTransform.YProperty, 0)
+                                },
+                                Cue = new Cue(1)
+                            }
+                        }
+                    };
+                    anim.RunAsync(secondChild);
+
+                }
+                secondChild.Arrange(new Rect((finalSize.Width - secondChildSize.Width) / 2, y2, secondChildSize.Width, secondChildSize.Height));
 
             }
             else if (childCount == 3)
@@ -141,7 +216,7 @@ namespace AvaloniaPrsimSimple.Controls
 
                     var animation = new Animation
                     {
-                        Duration = TimeSpan.FromSeconds(0.8),
+                        Duration = TimeSpan.FromSeconds(0.1),
                         Children =
                         {
                             new KeyFrame
