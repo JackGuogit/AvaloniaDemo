@@ -40,7 +40,22 @@
                         <ctrl:StackPanelEx />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
-
+                <!--<ItemsControl.Styles>
+                    <Style Selector="ContentPresenter">
+                        <Setter Property="RenderTransform" Value="scale(1,1)" />
+                        <Setter Property="Transitions">
+                            <Transitions>
+                                <TransformOperationsTransition
+                                    Easing="CubicEaseOut"
+                                    Property="RenderTransform"
+                                    Duration="0.2" />
+                            </Transitions>
+                        </Setter>
+                    </Style>
+                    <Style Selector="ContentPresenter:pointerover">
+                        <Setter Property="RenderTransform" Value="scale(1.2,1.2)" />
+                    </Style>
+                </ItemsControl.Styles>-->
             </ItemsControl>
         </StackPanel>
         <StackPanel Grid.Column="2" Background="AliceBlue">

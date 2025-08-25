@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Animation;
+using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Styling;
@@ -52,6 +53,7 @@ namespace AvaloniaPrsimSimple.Controls
                 var animation = new Animation
                 {
                     Duration = TimeSpan.FromSeconds(0.1),
+                    //Easing = new ElasticEaseOut(),//果冻效果
                     Children =
                         {
                             new KeyFrame
@@ -105,11 +107,7 @@ namespace AvaloniaPrsimSimple.Controls
 
 
 
-                if (firstChild.RenderTransform is not TranslateTransform transform)
-                {
-                    transform = new TranslateTransform();
-                    firstChild.RenderTransform = transform;
-                }
+
 
                 var animation = new Animation
                 {
@@ -207,12 +205,6 @@ namespace AvaloniaPrsimSimple.Controls
                     currentY += childSize.Height+ gap;
 
 
-
-                    if (child.RenderTransform is not TranslateTransform transform)
-                    {
-                        transform = new TranslateTransform();
-                        child.RenderTransform = transform;
-                    }
 
                     var animation = new Animation
                     {
