@@ -40,8 +40,8 @@
                         <ctrl:StackPanelEx />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
-                <!--<ItemsControl.Styles>
-                    <Style Selector="ContentPresenter">
+                <ItemsControl.Styles>
+                    <Style Selector="ContentPresenter > :is(Control)">
                         <Setter Property="RenderTransform" Value="scale(1,1)" />
                         <Setter Property="Transitions">
                             <Transitions>
@@ -52,10 +52,10 @@
                             </Transitions>
                         </Setter>
                     </Style>
-                    <Style Selector="ContentPresenter:pointerover">
+                    <Style Selector="ContentPresenter:pointerover > :is(Control)">
                         <Setter Property="RenderTransform" Value="scale(1.2,1.2)" />
                     </Style>
-                </ItemsControl.Styles>-->
+                </ItemsControl.Styles>
             </ItemsControl>
         </StackPanel>
         <StackPanel Grid.Column="2" Background="AliceBlue">
