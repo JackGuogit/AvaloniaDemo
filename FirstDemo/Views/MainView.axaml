@@ -42,13 +42,7 @@
             Background="Red"
             Content="button" />
 
-        <TextBox>
-            <TextBox.Styles>
-                <Style>
-                    <Setter Property="BorderTrickiness" Value="" />
-                </Style>
-            </TextBox.Styles>
-        </TextBox>
+        <TextBox />
 
         <FlyoutPresenter
             Height="100"

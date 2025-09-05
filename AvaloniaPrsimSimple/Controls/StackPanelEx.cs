@@ -1,48 +1,96 @@
 ﻿using Avalonia;
+using Avalonia.Animation;
+using Avalonia.Animation.Easings;
 using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Styling;
+using ImTools;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 namespace AvaloniaPrsimSimple.Controls
 {
     public class StackPanelEx : StackPanel
     {
-        /// <summary>
-        /// Defines the spacing between items when there are 3 or more.
-        /// </summary>
-        public static readonly StyledProperty<double> SpacingProperty =
-            AvaloniaProperty.Register<StackPanelEx, double>(nameof(Spacing), 4d);
 
-        /// <summary>
-        /// Gets or sets the spacing between items when there are 3 or more.
-        /// </summary>
-        public double Spacing
-        {
-            get => GetValue(SpacingProperty);
-            set => SetValue(SpacingProperty, value);
-        }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            var children = Children;
+            Avalonia.Controls.Controls children = Children;
             int childCount = children.Count;
-            double spacing = Spacing;
+            Debug.WriteLine(childCount);
+
+
+            if (childCount > 3)
+            {
+                Debug.WriteLine(finalSize.ToString());
+
+                return base.ArrangeOverride(finalSize);
+            }
 
             if (childCount == 0)
             {
                 return finalSize;
             }
 
-            if (childCount == 1)
+            else if (childCount == 1)
             {
                 // Case 1: One item, centered
-                var child = children[0];
+
+                Control child = children[0];
+                double minHeight = child.MinHeight;
+
                 var childSize = child.DesiredSize;
                 double x = (finalSize.Width - childSize.Width) / 2;
                 double y = (finalSize.Height - childSize.Height) / 2;
-                child.Arrange(new Rect(x, y, childSize.Width, childSize.Height));
+
+
+                double currentY = child.Bounds.Y;
+                var animation = new Animation
+                {
+                    Duration = TimeSpan.FromSeconds(0.1),
+                    //Easing = new ElasticEaseOut(),//果冻效果
+                    Children =
+                        {
+                            new KeyFrame
+                            {
+                                Setters =
+                                {
+
+                                                                       new Setter(TranslateTransform.YProperty, -y)
+                                },
+                                Cue = new Cue(0)
+                            },
+
+                            new KeyFrame
+                            {
+                                Setters =
+                                {
+
+                                                                        new Setter(TranslateTransform.YProperty,currentY)
+                                },
+                                Cue = new Cue(1)
+                            }
+                        }
+                };
+
+
+                if (child.Bounds.Y == 0)
+                {
+
+
+                    animation.RunAsync(child);
+                }
+
+
+                Rect rect = new Rect(x, y, childSize.Width, childSize.Height);
+
+                child.Arrange(rect);
+
             }
             else if (childCount == 2)
             {
@@ -55,10 +103,78 @@ namespace AvaloniaPrsimSimple.Controls
                 double y1 = 0;
                 double y2 = finalSize.Height - secondChildSize.Height;
 
+
+
+
+
+
+
+                var animation = new Animation
+                {
+                    Duration = TimeSpan.FromSeconds(0.1),
+                    Children =
+                    {
+                        new KeyFrame
+                        {
+                            Setters =
+                            {
+
+                                new Setter(TranslateTransform.YProperty, firstChild.Bounds.Y)
+                            },
+                            Cue = new Cue(0)
+                        },
+
+                        new KeyFrame
+                        {
+                            Setters =
+                            {
+                                new Setter(TranslateTransform.YProperty, y1)
+                            },
+                            Cue = new Cue(1)
+                        }
+                    }
+                };
+
+
+
                 firstChild.Arrange(new Rect((finalSize.Width - firstChildSize.Width) / 2, y1, firstChildSize.Width, firstChildSize.Height));
+                animation.RunAsync(firstChild);
+
+
+                if(secondChild.Bounds.Y<y2)
+                {
+                    var anim=new Animation
+                    {
+                        Duration = TimeSpan.FromSeconds(0.1),
+                        Children =
+                        {
+                            new KeyFrame
+                            {
+                                Setters =
+                                {
+
+                                    new Setter(TranslateTransform.YProperty, -secondChild.Bounds.Y)
+                                },
+                                Cue = new Cue(0)
+                            },
+
+                            new KeyFrame
+                            {
+                                Setters =
+                                {
+                                    new Setter(TranslateTransform.YProperty, 0)
+                                },
+                                Cue = new Cue(1)
+                            }
+                        }
+                    };
+                    anim.RunAsync(secondChild);
+
+                }
                 secondChild.Arrange(new Rect((finalSize.Width - secondChildSize.Width) / 2, y2, secondChildSize.Width, secondChildSize.Height));
+
             }
-            else
+            else if (childCount == 3)
             {
                 double totalChildrenHeight = 0;
                 foreach (var child in children)
@@ -68,40 +184,78 @@ namespace AvaloniaPrsimSimple.Controls
 
                 double availableSpace;
                 double currentY;
+                // Case 3: Three items with fixed spacing
+                availableSpace = finalSize.Height - totalChildrenHeight;
 
-                if (childCount == 3)
+                double gap = availableSpace / (childCount - 1);
+
+                currentY = 0;
+
+
+
+
+
+
+
+                for (int i = 1; i < childCount-1; i++)
                 {
-                    // Case 3: Three items with fixed spacing
-                    availableSpace = finalSize.Height - totalChildrenHeight;
-                    double gap = spacing;
-                    currentY = 0;
+                    var child = children[i];
+                    var childSize = child.DesiredSize;
 
-                    for (int i = 0; i < childCount; i++)
-                    {
-                        var child = children[i];
-                        var childSize = child.DesiredSize;
-                        child.Arrange(new Rect((finalSize.Width - childSize.Width) / 2, currentY, childSize.Width, childSize.Height));
-                        currentY += childSize.Height + gap;
-                    }
-                }
-                else // More than 3 items
-                {
-                    // Case 4: More than three items, evenly distributed with fixed spacing
-                    availableSpace = finalSize.Height - totalChildrenHeight - (spacing * (childCount - 1));
-                    double gap = spacing + availableSpace / (childCount - 1);
-                    currentY = 0;
+                    currentY += childSize.Height+ gap;
 
-                    for (int i = 0; i < childCount; i++)
+
+
+                    var animation = new Animation
                     {
-                        var child = children[i];
-                        var childSize = child.DesiredSize;
-                        child.Arrange(new Rect((finalSize.Width - childSize.Width) / 2, currentY, childSize.Width, childSize.Height));
-                        currentY += childSize.Height + gap;
-                    }
+                        Duration = TimeSpan.FromSeconds(0.1),
+                        Children =
+                        {
+                            new KeyFrame
+                            {
+                                Setters =
+                                {
+
+                                                                       new Setter(TranslateTransform.YProperty, currentY)
+                                },
+                                Cue = new Cue(0)
+                            },
+
+                            new KeyFrame
+                            {
+                                Setters =
+                                {
+ 
+                                                                        new Setter(TranslateTransform.YProperty, currentY-gap-childSize.Height)
+                                },
+                                Cue = new Cue(1)
+                            }
+                        }
+                    };
+                    child.Arrange(new Rect((finalSize.Width - childSize.Width) / 2, currentY, childSize.Width, childSize.Height));
+                    animation.RunAsync(child);
                 }
+
+                var childLast = children.Last();
+                var childLastSize = childLast.DesiredSize;
+                currentY += childLastSize.Height + gap;
+                childLast.Arrange(new Rect((finalSize.Width - childLastSize.Width) / 2, currentY, childLastSize.Width, childLastSize.Height));
+
+            }
+
+            else
+            {
+
+
+                return base.ArrangeOverride(finalSize);
             }
 
             return finalSize;
         }
+
+
+
+
+
     }
 }

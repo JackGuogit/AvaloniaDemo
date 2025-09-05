@@ -1,0 +1,79 @@
+<UserControl
+    x:Class="AvaloniaPrsimSimple.Views.TestExStackPanelView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrl="using:AvaloniaPrsimSimple.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:AvaloniaPrsimSimple.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:TestExStackPanelViewModel"
+    mc:Ignorable="d">
+
+    <Grid Height="200" ColumnDefinitions="Auto,*,*,*">
+
+        <StackPanel>
+            <Button
+                Grid.Column="0"
+                Width="80"
+                Height="40"
+                Command="{Binding AddItemCommand}"
+                Content="添加" />
+            <Button
+                Grid.Column="0"
+                Width="80"
+                Height="40"
+                Command="{Binding RemoveItemCommand}"
+                Content="删除" />
+        </StackPanel>
+        <StackPanel Grid.Column="1" Background="Bisque">
+            <ItemsControl
+                x:Name="ItemsControlWithTransitions"
+                MinHeight="400"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Background="Red"
+                ItemsSource="{Binding StackPanelItems}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ctrl:StackPanelEx />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.Styles>
+                    <Style Selector="ContentPresenter > :is(Control)">
+                        <Setter Property="RenderTransform" Value="scale(1,1)" />
+                        <Setter Property="Transitions">
+                            <Transitions>
+                                <TransformOperationsTransition
+                                    Easing="CubicEaseOut"
+                                    Property="RenderTransform"
+                                    Duration="0.2" />
+                            </Transitions>
+                        </Setter>
+                    </Style>
+                    <Style Selector="ContentPresenter:pointerover > :is(Control)">
+                        <Setter Property="RenderTransform" Value="scale(1.2,1.2)" />
+                    </Style>
+                </ItemsControl.Styles>
+            </ItemsControl>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Background="AliceBlue">
+            <ItemsControl
+                MinHeight="200"
+                VerticalAlignment="Top"
+                Background="YellowGreen"
+                ItemsSource="{Binding StackPanelItems}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.Styles />
+            </ItemsControl>
+        </StackPanel>
+
+        <ListBox Grid.Column="3" ItemsSource="{Binding StackPanelItems}" />
+    </Grid>
+
+</UserControl>
