@@ -9,8 +9,16 @@
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Remove="Assets\ClientLang.resx" />
+  </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Akavache" />
+    <PackageReference Include="Akavache.Settings" />
+    <PackageReference Include="Akavache.Sqlite3" />
+    <PackageReference Include="Akavache.SystemTextJson" />
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Themes.Fluent" />
     <PackageReference Include="Avalonia.Fonts.Inter" />
@@ -20,5 +28,17 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Avalonia.ReactiveUI" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Update="Assets\ClientLang.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ClientLang.resx</DependentUpon>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\ClientLang.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ClientLang.Designer.cs</LastGenOutput>
+    </AvaloniaResource>
   </ItemGroup>
 </Project>
