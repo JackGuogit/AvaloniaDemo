@@ -27,5 +27,6 @@
     <PackageReference Include="Irihi.Ursa" Version="1.13.0" />
     <PackageReference Include="Irihi.Ursa.ReactiveUIExtension" Version="1.0.2" />
     <PackageReference Include="Irihi.Ursa.Themes.Semi" Version="1.13.0" />
+    <PackageReference Include="Semi.Avalonia" Version="11.2.1.10" />
   </ItemGroup>
 </Project>
