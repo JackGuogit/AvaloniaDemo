@@ -31,9 +31,9 @@
 					<Setter Property="IsReadOnly" Value="{Binding IsReadOnly}" />
 				</Style>
 			</u:Breadcrumb.Styles>
-			</u:c>
-			<Panel Grid.Row="1">
-				<TextBlock Text="Content of Tab 2" />
-			</Panel>
-		</Grid>
+		</u:Breadcrumb>
+		<Panel Grid.Row="1">
+			<TextBlock Text="Content of Tab 2" />
+		</Panel>
+	</Grid>
 </UserControl>
