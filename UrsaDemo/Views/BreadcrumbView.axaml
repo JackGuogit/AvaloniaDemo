@@ -24,6 +24,7 @@
 		<u:Breadcrumb
             Grid.Row="0"
             CommandBinding="{Binding ActiveCommand}"
+            CommandParameterBinding="{Binding}"
             DisplayMemberBinding="{Binding Text}"
             ItemsSource="{Binding BreadcrumbItems}">
 			<u:Breadcrumb.Styles>
