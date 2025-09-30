@@ -15,12 +15,7 @@
 		<vm:BreadcrumbViewModel />
 	</UserControl.DataContext>
 
-	<UserControl.Resources>
-		<vm:IndexOfConverter x:Key="IndexOfConverter" />
-	</UserControl.Resources>
-
 	<Grid RowDefinitions="Auto,*">
-
 		<u:Breadcrumb
             Grid.Row="0"
             CommandBinding="{Binding ActiveCommand}"
