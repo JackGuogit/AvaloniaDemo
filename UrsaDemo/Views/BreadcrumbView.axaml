@@ -1,0 +1,35 @@
+<UserControl
+    x:Class="UrsaDemo.Views.BreadcrumbView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:u="https://irihi.tech/ursa"
+    xmlns:vm="clr-namespace:UrsaDemo.ViewModels;assembly=UrsaDemo"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:BreadcrumbViewModel"
+    mc:Ignorable="d">
+
+	<UserControl.DataContext>
+		<vm:BreadcrumbViewModel />
+	</UserControl.DataContext>
+
+	<Grid RowDefinitions="Auto,*">
+		<u:Breadcrumb
+            Grid.Row="0"
+            CommandBinding="{Binding ActiveCommand}"
+            CommandParameterBinding="{Binding}"
+            DisplayMemberBinding="{Binding Text}"
+            ItemsSource="{Binding BreadcrumbItems}">
+			<u:Breadcrumb.Styles>
+				<Style x:DataType="vm:BreadcrumbItem" Selector="u|BreadcrumbItem">
+					<Setter Property="IsReadOnly" Value="{Binding IsReadOnly}" />
+				</Style>
+			</u:Breadcrumb.Styles>
+		</u:Breadcrumb>
+		<Panel Grid.Row="1">
+			<TextBlock Text="Content of Tab 2" />
+		</Panel>
+	</Grid>
+</UserControl>

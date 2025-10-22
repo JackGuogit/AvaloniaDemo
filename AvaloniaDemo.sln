@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaCross.Browser", "Av
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepseekConsoleApp", "DeepseekConsoleApp\DeepseekConsoleApp.csproj", "{766294A6-6874-498E-EE2B-2DE34CA40C3E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrsaDemo", "UrsaDemo\UrsaDemo.csproj", "{A9BA60D1-A150-4217-9921-33AF34D82FA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,10 +103,6 @@ Global
 		{94300634-F7AD-42AD-924A-3D6CD2EB5026}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94300634-F7AD-42AD-924A-3D6CD2EB5026}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94300634-F7AD-42AD-924A-3D6CD2EB5026}.Release|Any CPU.Build.0 = Release|Any CPU
-		{766294A6-6874-498E-EE2B-2DE34CA40C3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{766294A6-6874-498E-EE2B-2DE34CA40C3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{766294A6-6874-498E-EE2B-2DE34CA40C3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{766294A6-6874-498E-EE2B-2DE34CA40C3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
