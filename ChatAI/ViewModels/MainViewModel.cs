@@ -49,7 +49,7 @@ namespace ChatAI.ViewModels
                 }
             });
             // 启动初始化
-            Task.Run(async () => await Run(Array.Empty<string>()));
+            Task.Run(async () => await InitChat());
         }
 
         public void Dispose()
@@ -64,9 +64,9 @@ namespace ChatAI.ViewModels
             Console.WriteLine();
 
             // 初始化API客户端
-            if (!await InitializeApiClientAsync())
+            bool flowControl = await InitChat();
+            if (!flowControl)
             {
-                Console.WriteLine("初始化失败，程序退出。");
                 return;
             }
 
@@ -94,6 +94,17 @@ namespace ChatAI.ViewModels
             }
 
             _apiClient?.Dispose();
+        }
+
+        private async Task<bool> InitChat()
+        {
+            if (!await InitializeApiClientAsync())
+            {
+                Console.WriteLine("初始化失败，程序退出。");
+                return false;
+            }
+
+            return true;
         }
 
         private async Task<bool> InitializeApiClientAsync()
