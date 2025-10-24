@@ -1,0 +1,33 @@
+<UserControl
+    x:Class="ChatAI.Views.MainView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:ChatAI.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="600"
+    x:DataType="vm:MainViewModel"
+    mc:Ignorable="d">
+	<Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,*,Auto">
+		<Border Grid.Row="1" Grid.Column="1">
+			<StackPanel Background="Aqua">
+				<Border
+                    Width="80"
+                    Height="40"
+                    HorizontalAlignment="Left"
+                    Background="GreenYellow" />
+				<Border
+                    Width="80"
+                    Height="40"
+                    HorizontalAlignment="Right"
+                    Background="Red" />
+			</StackPanel>
+		</Border>
+		<Border
+            Grid.Row="2"
+            Grid.Column="1"
+            Height="40"
+            Background="Green" />
+	</Grid>
+</UserControl>

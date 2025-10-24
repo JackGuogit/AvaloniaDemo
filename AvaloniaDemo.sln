@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepseekConsoleApp", "Deeps
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrsaDemo", "UrsaDemo\UrsaDemo.csproj", "{A9BA60D1-A150-4217-9921-33AF34D82FA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatAI", "ChatAI\ChatAI.csproj", "{169EC3BF-983C-4012-A1F3-8803250A1DDE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,10 @@ Global
 		{A9BA60D1-A150-4217-9921-33AF34D82FA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9BA60D1-A150-4217-9921-33AF34D82FA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9BA60D1-A150-4217-9921-33AF34D82FA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{169EC3BF-983C-4012-A1F3-8803250A1DDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{169EC3BF-983C-4012-A1F3-8803250A1DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{169EC3BF-983C-4012-A1F3-8803250A1DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{169EC3BF-983C-4012-A1F3-8803250A1DDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
