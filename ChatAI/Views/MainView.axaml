@@ -2,32 +2,73 @@
     x:Class="ChatAI.Views.MainView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:ChatAI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:ChatAI.Models"
     xmlns:vm="using:ChatAI.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="600"
     x:DataType="vm:MainViewModel"
     mc:Ignorable="d">
+
+	<UserControl.DataContext>
+		<vm:MainViewModel />
+	</UserControl.DataContext>
+
+	<UserControl.Resources>
+		<converters:RoleToAlignmentConverter x:Key="RoleToAlignmentConverter" />
+		<converters:RoleToBackgroundConverter x:Key="RoleToBackgroundConverter" />
+	</UserControl.Resources>
+
 	<Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,*,Auto">
 		<Border Grid.Row="1" Grid.Column="1">
-			<StackPanel Background="Aqua">
-				<Border
-                    Width="80"
-                    Height="40"
-                    HorizontalAlignment="Left"
-                    Background="GreenYellow" />
-				<Border
-                    Width="80"
-                    Height="40"
-                    HorizontalAlignment="Right"
-                    Background="Red" />
-			</StackPanel>
+			<ListBox
+                Background="White"
+                ItemsSource="{Binding ConversationHistory}"
+                SelectionMode="">
+				<ListBox.ItemTemplate>
+					<DataTemplate x:DataType="models:ChatMessage">
+						<Border
+                            MaxWidth="300"
+                            Margin="5"
+                            Padding="10"
+                            HorizontalAlignment="{Binding Role, Converter={StaticResource RoleToAlignmentConverter}}"
+                            Background="{Binding Role, Converter={StaticResource RoleToBackgroundConverter}}"
+                            CornerRadius="8">
+							<StackPanel>
+								<TextBlock
+                                    Margin="0,0,0,10"
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    Text="{Binding Role}" />
+								<Line Width="100" Fill="Black" />
+								<TextBlock Text="{Binding Content}" TextWrapping="Wrap" />
+							</StackPanel>
+						</Border>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
 		</Border>
 		<Border
             Grid.Row="2"
             Grid.Column="1"
-            Height="40"
-            Background="Green" />
+            Height="40">
+			<StackPanel Orientation="Horizontal">
+				<TextBox
+                    x:Name="InputTextBox"
+                    Width="400"
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Text="{Binding UserInput}"
+                    TextWrapping="Wrap" />
+				<Button
+                    Width="75"
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Command="{Binding SendMessageCommand}"
+                    Content="Send" />
+			</StackPanel>
+		</Border>
 	</Grid>
 </UserControl>
