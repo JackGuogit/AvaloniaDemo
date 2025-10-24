@@ -27,19 +27,37 @@ namespace ChatAI.Services
             _chatClient = _client.GetChatClient("deepseek-chat"); // 默认模型，可以在请求时覆盖
         }
 
-        public async Task<string?> CreateChatCompletionAsync(List<Models.ChatMessage> messages, string model = "deepseek-chat")
+        public async Task<string?> CreateChatCompletionAsync(List<Models.ChatMessage> messages, string model = "deepseek-chat", bool enableFunctions = true)
         {
             try
             {
                 var chatMessages = ConvertToChatMessages(messages);
-
-                var completion = await _chatClient.CompleteChatAsync(chatMessages, new ChatCompletionOptions
+                var options = new ChatCompletionOptions
                 {
                     MaxOutputTokenCount = 1000,
                     Temperature = 0.7f
-                });
+                };
 
-                return completion.Value.Content.FirstOrDefault()?.Text;
+                // 如果启用函数调用，添加可用的工具
+                if (enableFunctions)
+                {
+                    var tools = LocalFunctionHandler.GetAvailableTools();
+                    foreach (var tool in tools)
+                    {
+                        options.Tools.Add(tool);
+                    }
+                }
+
+                var completion = await _chatClient.CompleteChatAsync(chatMessages, options);
+                var response = completion.Value;
+
+                // 检查是否有函数调用
+                if (response.ToolCalls?.Count > 0)
+                {
+                    return await HandleFunctionCallsAsync(messages, response, options);
+                }
+
+                return response.Content.FirstOrDefault()?.Text;
             }
             catch (Exception ex)
             {
@@ -48,28 +66,131 @@ namespace ChatAI.Services
             }
         }
 
+        private async Task<string> HandleFunctionCallsAsync(List<Models.ChatMessage> messages, ChatCompletion response, ChatCompletionOptions options)
+        {
+            var chatMessages = ConvertToChatMessages(messages);
+            
+            // 添加助手的响应（包含函数调用）
+            chatMessages.Add(new AssistantChatMessage(response.ToolCalls));
+
+            // 执行每个函数调用
+            foreach (var toolCall in response.ToolCalls)
+            {
+                if (toolCall is ChatToolCall functionCall)
+                {
+                    var functionName = functionCall.FunctionName;
+                    var functionArguments = functionCall.FunctionArguments.ToString();
+
+                    // 执行本地函数
+                    var functionResult = await LocalFunctionHandler.ExecuteFunctionAsync(functionName, functionArguments);
+
+                    // 添加函数结果到对话
+                    chatMessages.Add(new ToolChatMessage(functionCall.Id, functionResult));
+                }
+            }
+
+            // 再次调用API获取最终响应
+            var finalCompletion = await _chatClient.CompleteChatAsync(chatMessages, options);
+            return finalCompletion.Value.Content.FirstOrDefault()?.Text ?? "";
+        }
+
         public async IAsyncEnumerable<string> CreateChatCompletionStreamAsync(
             List<Models.ChatMessage> messages,
             string model = "gpt-3.5-turbo",
+            bool enableFunctions = true,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             var chatMessages = ConvertToChatMessages(messages);
-
-            var streamingCompletion = _chatClient.CompleteChatStreamingAsync(chatMessages, new ChatCompletionOptions
+            var options = new ChatCompletionOptions
             {
                 MaxOutputTokenCount = 1000,
                 Temperature = 0.7f
-            }, cancellationToken);
+            };
+
+            // 如果启用函数调用，添加可用的工具
+            if (enableFunctions)
+            {
+                var tools = LocalFunctionHandler.GetAvailableTools();
+                foreach (var tool in tools)
+                {
+                    options.Tools.Add(tool);
+                }
+            }
+
+            var streamingCompletion = _chatClient.CompleteChatStreamingAsync(chatMessages, options, cancellationToken);
+            var functionCalls = new List<ChatToolCall>();
+            var hasContent = false;
 
             await foreach (var update in streamingCompletion.WithCancellation(cancellationToken))
             {
+                // 检查是否有函数调用
+                if (update.ToolCallUpdates?.Count > 0)
+                {
+                    foreach (var toolCallUpdate in update.ToolCallUpdates)
+                    {
+                        // 收集函数调用信息
+                        var existingCall = functionCalls.FirstOrDefault(fc => fc.Id == toolCallUpdate.ToolCallId);
+                        if (existingCall == null && !string.IsNullOrEmpty(toolCallUpdate.ToolCallId))
+                        {
+                            functionCalls.Add(ChatToolCall.CreateFunctionToolCall(
+                                toolCallUpdate.ToolCallId,
+                                toolCallUpdate.FunctionName ?? "",
+                                BinaryData.FromString(toolCallUpdate.FunctionArgumentsUpdate?.ToString() ?? "")));
+                        }
+                        else if (existingCall != null && toolCallUpdate.FunctionArgumentsUpdate != null && !string.IsNullOrEmpty(toolCallUpdate.FunctionArgumentsUpdate.ToString()))
+                        {
+                            // 更新函数参数
+                            var index = functionCalls.IndexOf(existingCall);
+                            functionCalls[index] = ChatToolCall.CreateFunctionToolCall(
+                                existingCall.Id,
+                                existingCall.FunctionName,
+                                BinaryData.FromString(existingCall.FunctionArguments.ToString() + (toolCallUpdate.FunctionArgumentsUpdate?.ToString() ?? "")));
+                        }
+                    }
+                }
+
+                // 处理常规内容
                 if (update.ContentUpdate.Count > 0)
                 {
+                    hasContent = true;
                     foreach (var contentPart in update.ContentUpdate)
                     {
                         if (!string.IsNullOrEmpty(contentPart.Text))
                         {
                             yield return contentPart.Text;
+                        }
+                    }
+                }
+            }
+
+            // 如果有函数调用但没有内容，执行函数调用
+            if (functionCalls.Count > 0 && !hasContent)
+            {
+                // 添加助手消息（包含函数调用）
+                chatMessages.Add(new AssistantChatMessage(functionCalls));
+
+                // 执行函数调用
+                foreach (var functionCall in functionCalls)
+                {
+                    var functionResult = await LocalFunctionHandler.ExecuteFunctionAsync(
+                        functionCall.FunctionName, 
+                        functionCall.FunctionArguments.ToString());
+                    
+                    chatMessages.Add(new ToolChatMessage(functionCall.Id, functionResult));
+                }
+
+                // 获取最终响应并流式返回
+                var finalStreamingCompletion = _chatClient.CompleteChatStreamingAsync(chatMessages, options, cancellationToken);
+                await foreach (var update in finalStreamingCompletion.WithCancellation(cancellationToken))
+                {
+                    if (update.ContentUpdate.Count > 0)
+                    {
+                        foreach (var contentPart in update.ContentUpdate)
+                        {
+                            if (!string.IsNullOrEmpty(contentPart.Text))
+                            {
+                                yield return contentPart.Text;
+                            }
                         }
                     }
                 }

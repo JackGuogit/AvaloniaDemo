@@ -165,10 +165,10 @@ namespace ChatAI.ViewModels
                 // 准备消息列表（不包含刚添加的空助手消息）
                 var messages = ConversationHistory.Take(ConversationHistory.Count - 1).ToList();
 
-                // 使用流式传输
+                // 使用流式传输，启用函数调用
                 var contentBuilder = new StringBuilder();
 
-                await foreach (var contentChunk in _apiClient!.CreateChatCompletionStreamAsync(messages, "gpt-3.5-turbo"))
+                await foreach (var contentChunk in _apiClient!.CreateChatCompletionStreamAsync(messages, "deepseek-chat", enableFunctions: true))
                 {
                     contentBuilder.Append(contentChunk);
                     assistantMessage.Content = contentBuilder.ToString();
@@ -188,7 +188,7 @@ namespace ChatAI.ViewModels
                 try
                 {
                     var messages = ConversationHistory.Take(ConversationHistory.Count - 1).ToList();
-                    var response = await _apiClient!.CreateChatCompletionAsync(messages, "gpt-3.5-turbo");
+                    var response = await _apiClient!.CreateChatCompletionAsync(messages, "deepseek-chat", enableFunctions: true);
                     
                     if (!string.IsNullOrEmpty(response))
                     {
