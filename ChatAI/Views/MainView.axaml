@@ -21,12 +21,23 @@
 		<converters:RoleToBackgroundConverter x:Key="RoleToBackgroundConverter" />
 	</UserControl.Resources>
 
+	<UserControl.Styles>
+		<Style Selector="ListBoxItem">
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="Padding" Value="0" />
+			<Setter Property="Margin" Value="0" />
+		</Style>
+		<Style Selector="ListBoxItem:selected">
+			<Setter Property="Background" Value="Transparent" />
+		</Style>
+		<Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+			<Setter Property="Background" Value="Transparent" />
+		</Style>
+	</UserControl.Styles>
+
 	<Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,*,Auto">
 		<Border Grid.Row="1" Grid.Column="1">
-			<ListBox
-                Background="White"
-                ItemsSource="{Binding ConversationHistory}"
-                SelectionMode="">
+			<ListBox Background="White" ItemsSource="{Binding ConversationHistory}">
 				<ListBox.ItemTemplate>
 					<DataTemplate x:DataType="models:ChatMessage">
 						<Border
