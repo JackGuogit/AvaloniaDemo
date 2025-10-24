@@ -2,46 +2,36 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-using ChatAI.Models;
+using OpenAI.Chat;
 
 namespace ChatAI.Services
 {
     public class LocalFunctionHandler
     {
-        public static List<Tool> GetAvailableTools()
+        public static List<ChatTool> GetAvailableTools()
         {
-            return new List<Tool>
+            return new List<ChatTool>
             {
-                new Tool
-                {
-                    Type = "function",
-                    Function = new FunctionDefinition
+                ChatTool.CreateFunctionTool(
+                    functionName: "get_current_time",
+                    functionDescription: "获取当前的日期和时间",
+                    functionParameters: BinaryData.FromObjectAsJson(new
                     {
-                        Name = "get_current_time",
-                        Description = "获取当前的日期和时间",
-                        Parameters = new
-                        {
-                            type = "object",
-                            properties = new { },
-                            required = new string[] { }
-                        }
-                    }
-                },
-                new Tool
-                {
-                    Type= "function",
-                    Function = new FunctionDefinition
+                        type = "object",
+                        properties = new { },
+                        required = new string[] { }
+                    })
+                ),
+                ChatTool.CreateFunctionTool(
+                    functionName: "get_loacl_name",
+                    functionDescription: "获取当前设备名称",
+                    functionParameters: BinaryData.FromObjectAsJson(new
                     {
-                        Name = "get_loacl_name",
-                        Description = "获取当前设备名称",
-                        Parameters = new
-                        {
-                            type = "object",
-                            properties = new { },
-                            required = new string[] { }
-                        }
-                    }
-                }
+                        type = "object",
+                        properties = new { },
+                        required = new string[] { }
+                    })
+                )
             };
         }
 

@@ -17,7 +17,7 @@ namespace ChatAI.ViewModels
 {
     public class MainViewModel : ViewModelBase, IDisposable
     {
-        private static DeepseekApiClient? _apiClient;
+        private static OpenAIApiClient? _apiClient;
         //private static List<ChatMessage> _conversationHistory = new();
 
         private ObservableCollection<ChatMessage> _conversationHistory = new();
@@ -55,7 +55,7 @@ namespace ChatAI.ViewModels
 
         public void Dispose()
         {
-            _apiClient?.Dispose();
+            // OpenAIApiClient 不需要手动释放资源
         }
 
         private async Task Run(string[] args)
@@ -94,7 +94,7 @@ namespace ChatAI.ViewModels
                 Console.WriteLine();
             }
 
-            _apiClient?.Dispose();
+            // OpenAIApiClient 不需要手动释放资源
         }
 
         private async Task<bool> InitChat()
@@ -117,23 +117,23 @@ namespace ChatAI.ViewModels
                 if (!File.Exists(configPath))
                 {
                     Console.WriteLine($"配置文件不存在: {configPath}");
-                    Console.WriteLine("请创建 appsettings.json 文件并配置您的 Deepseek API Key。");
+                    Console.WriteLine("请创建 appsettings.json 文件并配置您的 OpenAI API Key。");
                     return false;
                 }
 
                 var configJson = await File.ReadAllTextAsync(configPath);
                 var config = JsonSerializer.Deserialize<JsonElement>(configJson);
 
-                var apiKey = config.GetProperty("DeepseekApi").GetProperty("ApiKey").GetString();
-                var baseUrl = config.GetProperty("DeepseekApi").GetProperty("BaseUrl").GetString();
+                var apiKey = config.GetProperty("OpenAI").GetProperty("ApiKey").GetString();
+                var baseUrl = config.GetProperty("OpenAI").GetProperty("BaseUrl").GetString();
 
-                if (string.IsNullOrEmpty(apiKey) || apiKey == "YOUR_DEEPSEEK_API_KEY_HERE")
+                if (string.IsNullOrEmpty(apiKey) || apiKey == "YOUR_OPENAI_API_KEY_HERE")
                 {
-                    Console.WriteLine("请在 appsettings.json 中配置有效的 Deepseek API Key。");
+                    Console.WriteLine("请在 appsettings.json 中配置有效的 OpenAI API Key。");
                     return false;
                 }
 
-                _apiClient = new DeepseekApiClient(apiKey, baseUrl ?? "https://api.deepseek.com/v1");
+                _apiClient = new OpenAIApiClient(apiKey, baseUrl);
                 return true;
             }
             catch (Exception ex)
@@ -162,156 +162,48 @@ namespace ChatAI.ViewModels
                 };
                 ConversationHistory.Add(assistantMessage);
 
-                // 创建请求
-                var request = new ChatCompletionRequest
-                {
-                    Model = "deepseek-chat",
-                    Messages = new List<ChatMessage>(ConversationHistory.Take(ConversationHistory.Count - 1)), // 不包含刚添加的空助手消息
-                    Tools = LocalFunctionHandler.GetAvailableTools(),
-                    ToolChoice = "auto",
-                    Temperature = 0.7,
-                    MaxTokens = 1000
-                };
+                // 准备消息列表（不包含刚添加的空助手消息）
+                var messages = ConversationHistory.Take(ConversationHistory.Count - 1).ToList();
 
                 // 使用流式传输
                 var contentBuilder = new StringBuilder();
-                var toolCallsBuilder = new List<ToolCall>();
-                var currentToolCall = new Dictionary<int, ToolCall>();
 
-                await foreach (var streamResponse in _apiClient!.CreateChatCompletionStreamAsync(request))
+                await foreach (var contentChunk in _apiClient!.CreateChatCompletionStreamAsync(messages, "gpt-3.5-turbo"))
                 {
-                    if (streamResponse?.Choices?.Count > 0)
-                    {
-                        var choice = streamResponse.Choices[0];
-                        var delta = choice.Delta;
-
-                        // 处理内容增量
-                        if (!string.IsNullOrEmpty(delta.Content))
-                        {
-                            contentBuilder.Append(delta.Content);
-                            assistantMessage.Content = contentBuilder.ToString();
-                            
-                            // 触发UI更新
-                            this.RaisePropertyChanged(nameof(ConversationHistory));
-                        }
-
-                        // 处理工具调用增量
-                        if (delta.ToolCalls?.Count > 0)
-                        {
-                            foreach (var toolCallDelta in delta.ToolCalls)
-                            {
-                                if (!currentToolCall.ContainsKey(toolCallDelta.Index))
-                                {
-                                    currentToolCall[toolCallDelta.Index] = new ToolCall
-                                    {
-                                        Id = toolCallDelta.Id ?? string.Empty,
-                                        Type = toolCallDelta.Type ?? "function",
-                                        Function = new FunctionCall
-                                        {
-                                            Name = toolCallDelta.Function?.Name ?? string.Empty,
-                                            Arguments = string.Empty
-                                        }
-                                    };
-                                }
-
-                                var toolCall = currentToolCall[toolCallDelta.Index];
-                                
-                                if (!string.IsNullOrEmpty(toolCallDelta.Id))
-                                    toolCall.Id = toolCallDelta.Id;
-                                
-                                if (!string.IsNullOrEmpty(toolCallDelta.Type))
-                                    toolCall.Type = toolCallDelta.Type;
-
-                                if (toolCallDelta.Function != null)
-                                {
-                                    if (!string.IsNullOrEmpty(toolCallDelta.Function.Name))
-                                        toolCall.Function.Name = toolCallDelta.Function.Name;
-                                    
-                                    if (!string.IsNullOrEmpty(toolCallDelta.Function.Arguments))
-                                        toolCall.Function.Arguments += toolCallDelta.Function.Arguments;
-                                }
-                            }
-                        }
-
-                        // 检查是否完成
-                        if (choice.FinishReason != null)
-                        {
-                            // 如果有工具调用，设置到消息中
-                            if (currentToolCall.Count > 0)
-                            {
-                                assistantMessage.ToolCalls = currentToolCall.Values.ToList();
-                            }
-                            break;
-                        }
-                    }
-                }
-
-                // 处理工具调用（如果有）
-                if (assistantMessage.ToolCalls?.Count > 0)
-                {
-                    // 处理函数调用
-                    foreach (var toolCall in assistantMessage.ToolCalls)
-                    {
-                        Console.WriteLine($"AI正在调用函数: {toolCall.Function.Name}");
-
-                        var functionResult = await LocalFunctionHandler.ExecuteFunctionAsync(
-                            toolCall.Function.Name,
-                            toolCall.Function.Arguments);
-
-                        // 添加函数结果到对话历史
-                        ConversationHistory.Add(new ChatMessage
-                        {
-                            Role = "tool",
-                            Content = functionResult,
-                            ToolCallId = toolCall.Id
-                        });
-                    }
-
-                    // 再次调用API获取最终回复（使用流式传输）
-                    var finalRequest = new ChatCompletionRequest
-                    {
-                        Model = "deepseek-chat",
-                        Messages = new List<ChatMessage>(ConversationHistory),
-                        Temperature = 0.7,
-                        MaxTokens = 1000
-                    };
-
-                    // 创建新的助手消息用于最终回复
-                    var finalAssistantMessage = new ChatMessage
-                    {
-                        Role = "assistant",
-                        Content = string.Empty
-                    };
-                    ConversationHistory.Add(finalAssistantMessage);
-
-                    var finalContentBuilder = new StringBuilder();
-                    await foreach (var streamResponse in _apiClient.CreateChatCompletionStreamAsync(finalRequest))
-                    {
-                        if (streamResponse?.Choices?.Count > 0)
-                        {
-                            var choice = streamResponse.Choices[0];
-                            var delta = choice.Delta;
-
-                            if (!string.IsNullOrEmpty(delta.Content))
-                            {
-                                finalContentBuilder.Append(delta.Content);
-                                finalAssistantMessage.Content = finalContentBuilder.ToString();
-                                
-                                // 触发UI更新
-                                this.RaisePropertyChanged(nameof(ConversationHistory));
-                            }
-
-                            if (choice.FinishReason != null)
-                            {
-                                break;
-                            }
-                        }
-                    }
+                    contentBuilder.Append(contentChunk);
+                    assistantMessage.Content = contentBuilder.ToString();
+                    
+                    // 触发UI更新
+                    this.RaisePropertyChanged(nameof(ConversationHistory));
+                    
+                    // 添加小延迟以便用户能看到流式效果
+                    await Task.Delay(50);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"处理用户输入时发生错误: {ex.Message}");
+                
+                // 如果流式失败，尝试普通请求
+                try
+                {
+                    var messages = ConversationHistory.Take(ConversationHistory.Count - 1).ToList();
+                    var response = await _apiClient!.CreateChatCompletionAsync(messages, "gpt-3.5-turbo");
+                    
+                    if (!string.IsNullOrEmpty(response))
+                    {
+                        var assistantMessage = ConversationHistory.LastOrDefault(m => m.Role == "assistant");
+                        if (assistantMessage != null)
+                        {
+                            assistantMessage.Content = response;
+                            this.RaisePropertyChanged(nameof(ConversationHistory));
+                        }
+                    }
+                }
+                catch (Exception fallbackEx)
+                {
+                    Console.WriteLine($"备用请求也失败了: {fallbackEx.Message}");
+                }
             }
         }
     }
