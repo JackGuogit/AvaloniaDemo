@@ -65,21 +65,22 @@
             Grid.Row="2"
             Grid.Column="1"
             Height="40">
-			<StackPanel Orientation="Horizontal">
+			<Grid ColumnDefinitions="*,Auto">
 				<TextBox
                     x:Name="InputTextBox"
-                    Width="400"
+                    Grid.Column="0"
                     Margin="5"
                     VerticalAlignment="Center"
                     Text="{Binding UserInput}"
                     TextWrapping="Wrap" />
 				<Button
+                    Grid.Column="1"
                     Width="75"
                     Margin="5"
                     VerticalAlignment="Center"
                     Command="{Binding SendMessageCommand}"
                     Content="Send" />
-			</StackPanel>
+			</Grid>
 		</Border>
 	</Grid>
 </UserControl>

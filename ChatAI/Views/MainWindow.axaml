@@ -9,6 +9,7 @@
     Title="ChatAI"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Width="400"
     x:DataType="vm:MainWindowViewModel"
     Icon="/Assets/avalonia-logo.ico"
     mc:Ignorable="d">
