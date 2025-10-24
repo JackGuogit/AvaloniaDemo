@@ -8,6 +8,7 @@
     xmlns:models="using:ChatAI.Models"
     xmlns:vm="using:ChatAI.ViewModels"
     d:DesignHeight="450"
+	        xmlns:md="https://github.com/whistyun/Markdown.Avalonia"
     d:DesignWidth="600"
     x:DataType="vm:MainViewModel"
     mc:Ignorable="d">
@@ -20,6 +21,10 @@
 		<converters:RoleToAlignmentConverter x:Key="RoleToAlignmentConverter" />
 		<converters:RoleToBackgroundConverter x:Key="RoleToBackgroundConverter" />
 	</UserControl.Resources>
+
+	<UserControl.KeyBindings>
+		<KeyBinding Gesture="Enter" Command="{Binding SendMessageCommand}" />
+	</UserControl.KeyBindings>
 
 	<UserControl.Styles>
 		<Style Selector="ListBoxItem">
@@ -54,7 +59,7 @@
                                     FontWeight="Bold"
                                     Text="{Binding Role}" />
 								<Line Width="100" Fill="Black" />
-								<TextBlock Text="{Binding Content}" TextWrapping="Wrap" />
+								<md:MarkdownScrollViewer Markdown="{Binding Content}"/>
 							</StackPanel>
 						</Border>
 					</DataTemplate>
