@@ -22,6 +22,9 @@ namespace ChatAI.Models
 
         [JsonPropertyName("max_tokens")]
         public int MaxTokens { get; set; } = 1000;
+
+        [JsonPropertyName("stream")]
+        public bool Stream { get; set; } = false;
     }
 
     public class ChatMessage
@@ -124,5 +127,75 @@ namespace ChatAI.Models
 
         [JsonPropertyName("total_tokens")]
         public int TotalTokens { get; set; }
+    }
+
+    // 流式传输相关模型
+    public class ChatCompletionStreamResponse
+    {
+        [JsonPropertyName("id")]
+        public string Id { get; set; } = string.Empty;
+
+        [JsonPropertyName("object")]
+        public string Object { get; set; } = string.Empty;
+
+        [JsonPropertyName("created")]
+        public long Created { get; set; }
+
+        [JsonPropertyName("model")]
+        public string Model { get; set; } = string.Empty;
+
+        [JsonPropertyName("choices")]
+        public List<StreamChoice> Choices { get; set; } = new();
+
+        [JsonPropertyName("usage")]
+        public Usage? Usage { get; set; }
+    }
+
+    public class StreamChoice
+    {
+        [JsonPropertyName("index")]
+        public int Index { get; set; }
+
+        [JsonPropertyName("delta")]
+        public ChatMessageDelta Delta { get; set; } = new();
+
+        [JsonPropertyName("finish_reason")]
+        public string? FinishReason { get; set; }
+    }
+
+    public class ChatMessageDelta
+    {
+        [JsonPropertyName("role")]
+        public string? Role { get; set; }
+
+        [JsonPropertyName("content")]
+        public string? Content { get; set; }
+
+        [JsonPropertyName("tool_calls")]
+        public List<ToolCallDelta>? ToolCalls { get; set; }
+    }
+
+    public class ToolCallDelta
+    {
+        [JsonPropertyName("index")]
+        public int Index { get; set; }
+
+        [JsonPropertyName("id")]
+        public string? Id { get; set; }
+
+        [JsonPropertyName("type")]
+        public string? Type { get; set; }
+
+        [JsonPropertyName("function")]
+        public FunctionCallDelta? Function { get; set; }
+    }
+
+    public class FunctionCallDelta
+    {
+        [JsonPropertyName("name")]
+        public string? Name { get; set; }
+
+        [JsonPropertyName("arguments")]
+        public string? Arguments { get; set; }
     }
 }

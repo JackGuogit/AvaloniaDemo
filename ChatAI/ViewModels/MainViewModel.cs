@@ -1,4 +1,4 @@
-﻿using ChatAI.Models;
+using ChatAI.Models;
 using ChatAI.Services;
 using ReactiveUI;
 using System;
@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -153,74 +154,159 @@ namespace ChatAI.ViewModels
                     Content = userInput
                 });
 
+                // 创建一个空的助手消息用于流式更新
+                var assistantMessage = new ChatMessage
+                {
+                    Role = "assistant",
+                    Content = string.Empty
+                };
+                ConversationHistory.Add(assistantMessage);
+
                 // 创建请求
                 var request = new ChatCompletionRequest
                 {
                     Model = "deepseek-chat",
-                    Messages = new List<ChatMessage>(ConversationHistory),
+                    Messages = new List<ChatMessage>(ConversationHistory.Take(ConversationHistory.Count - 1)), // 不包含刚添加的空助手消息
                     Tools = LocalFunctionHandler.GetAvailableTools(),
                     ToolChoice = "auto",
                     Temperature = 0.7,
                     MaxTokens = 1000
                 };
 
-                // 发送请求
-                var response = await _apiClient!.CreateChatCompletionAsync(request);
-                if (response?.Choices?.Count > 0)
+                // 使用流式传输
+                var contentBuilder = new StringBuilder();
+                var toolCallsBuilder = new List<ToolCall>();
+                var currentToolCall = new Dictionary<int, ToolCall>();
+
+                await foreach (var streamResponse in _apiClient!.CreateChatCompletionStreamAsync(request))
                 {
-                    var assistantMessage = response.Choices[0].Message;
-
-                    // 检查是否需要调用函数
-                    if (assistantMessage.ToolCalls?.Count > 0)
+                    if (streamResponse?.Choices?.Count > 0)
                     {
-                        // 添加助手消息到历史
-                        ConversationHistory.Add(assistantMessage);
+                        var choice = streamResponse.Choices[0];
+                        var delta = choice.Delta;
 
-                        // 处理函数调用
-                        foreach (var toolCall in assistantMessage.ToolCalls)
+                        // 处理内容增量
+                        if (!string.IsNullOrEmpty(delta.Content))
                         {
-                            Console.WriteLine($"AI正在调用函数: {toolCall.Function.Name}");
+                            contentBuilder.Append(delta.Content);
+                            assistantMessage.Content = contentBuilder.ToString();
+                            
+                            // 触发UI更新
+                            this.RaisePropertyChanged(nameof(ConversationHistory));
+                        }
 
-                            var functionResult = await LocalFunctionHandler.ExecuteFunctionAsync(
-                                toolCall.Function.Name,
-                                toolCall.Function.Arguments);
-
-                            // 添加函数结果到对话历史
-                            ConversationHistory.Add(new ChatMessage
+                        // 处理工具调用增量
+                        if (delta.ToolCalls?.Count > 0)
+                        {
+                            foreach (var toolCallDelta in delta.ToolCalls)
                             {
-                                Role = "tool",
-                                Content = functionResult,
-                                ToolCallId = toolCall.Id
-                            });
+                                if (!currentToolCall.ContainsKey(toolCallDelta.Index))
+                                {
+                                    currentToolCall[toolCallDelta.Index] = new ToolCall
+                                    {
+                                        Id = toolCallDelta.Id ?? string.Empty,
+                                        Type = toolCallDelta.Type ?? "function",
+                                        Function = new FunctionCall
+                                        {
+                                            Name = toolCallDelta.Function?.Name ?? string.Empty,
+                                            Arguments = string.Empty
+                                        }
+                                    };
+                                }
+
+                                var toolCall = currentToolCall[toolCallDelta.Index];
+                                
+                                if (!string.IsNullOrEmpty(toolCallDelta.Id))
+                                    toolCall.Id = toolCallDelta.Id;
+                                
+                                if (!string.IsNullOrEmpty(toolCallDelta.Type))
+                                    toolCall.Type = toolCallDelta.Type;
+
+                                if (toolCallDelta.Function != null)
+                                {
+                                    if (!string.IsNullOrEmpty(toolCallDelta.Function.Name))
+                                        toolCall.Function.Name = toolCallDelta.Function.Name;
+                                    
+                                    if (!string.IsNullOrEmpty(toolCallDelta.Function.Arguments))
+                                        toolCall.Function.Arguments += toolCallDelta.Function.Arguments;
+                                }
+                            }
                         }
 
-                        // 再次调用API获取最终回复
-                        var finalRequest = new ChatCompletionRequest
+                        // 检查是否完成
+                        if (choice.FinishReason != null)
                         {
-                            Model = "deepseek-chat",
-                            Messages = new List<ChatMessage>(ConversationHistory),
-                            Temperature = 0.7,
-                            MaxTokens = 1000
-                        };
-
-                        var finalResponse = await _apiClient.CreateChatCompletionAsync(finalRequest);
-                        if (finalResponse?.Choices?.Count > 0)
-                        {
-                            var finalMessage = finalResponse.Choices[0].Message;
-                            Console.WriteLine($"AI: {finalMessage.Content}");
-                            ConversationHistory.Add(finalMessage);
+                            // 如果有工具调用，设置到消息中
+                            if (currentToolCall.Count > 0)
+                            {
+                                assistantMessage.ToolCalls = currentToolCall.Values.ToList();
+                            }
+                            break;
                         }
-                    }
-                    else
-                    {
-                        // 直接回复，无需函数调用
-                        Console.WriteLine($"AI: {assistantMessage.Content}");
-                        ConversationHistory.Add(assistantMessage);
                     }
                 }
-                else
+
+                // 处理工具调用（如果有）
+                if (assistantMessage.ToolCalls?.Count > 0)
                 {
-                    Console.WriteLine("抱歉，无法获取AI回复。");
+                    // 处理函数调用
+                    foreach (var toolCall in assistantMessage.ToolCalls)
+                    {
+                        Console.WriteLine($"AI正在调用函数: {toolCall.Function.Name}");
+
+                        var functionResult = await LocalFunctionHandler.ExecuteFunctionAsync(
+                            toolCall.Function.Name,
+                            toolCall.Function.Arguments);
+
+                        // 添加函数结果到对话历史
+                        ConversationHistory.Add(new ChatMessage
+                        {
+                            Role = "tool",
+                            Content = functionResult,
+                            ToolCallId = toolCall.Id
+                        });
+                    }
+
+                    // 再次调用API获取最终回复（使用流式传输）
+                    var finalRequest = new ChatCompletionRequest
+                    {
+                        Model = "deepseek-chat",
+                        Messages = new List<ChatMessage>(ConversationHistory),
+                        Temperature = 0.7,
+                        MaxTokens = 1000
+                    };
+
+                    // 创建新的助手消息用于最终回复
+                    var finalAssistantMessage = new ChatMessage
+                    {
+                        Role = "assistant",
+                        Content = string.Empty
+                    };
+                    ConversationHistory.Add(finalAssistantMessage);
+
+                    var finalContentBuilder = new StringBuilder();
+                    await foreach (var streamResponse in _apiClient.CreateChatCompletionStreamAsync(finalRequest))
+                    {
+                        if (streamResponse?.Choices?.Count > 0)
+                        {
+                            var choice = streamResponse.Choices[0];
+                            var delta = choice.Delta;
+
+                            if (!string.IsNullOrEmpty(delta.Content))
+                            {
+                                finalContentBuilder.Append(delta.Content);
+                                finalAssistantMessage.Content = finalContentBuilder.ToString();
+                                
+                                // 触发UI更新
+                                this.RaisePropertyChanged(nameof(ConversationHistory));
+                            }
+
+                            if (choice.FinishReason != null)
+                            {
+                                break;
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
