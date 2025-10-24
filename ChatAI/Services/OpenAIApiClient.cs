@@ -69,7 +69,7 @@ namespace ChatAI.Services
         private async Task<string> HandleFunctionCallsAsync(List<Models.ChatMessage> messages, ChatCompletion response, ChatCompletionOptions options)
         {
             var chatMessages = ConvertToChatMessages(messages);
-            
+
             // 添加助手的响应（包含函数调用）
             chatMessages.Add(new AssistantChatMessage(response.ToolCalls));
 
@@ -96,7 +96,7 @@ namespace ChatAI.Services
 
         public async IAsyncEnumerable<string> CreateChatCompletionStreamAsync(
             List<Models.ChatMessage> messages,
-            string model = "gpt-3.5-turbo",
+            string model = "deepseek-chat",
             bool enableFunctions = true,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
@@ -173,9 +173,9 @@ namespace ChatAI.Services
                 foreach (var functionCall in functionCalls)
                 {
                     var functionResult = await LocalFunctionHandler.ExecuteFunctionAsync(
-                        functionCall.FunctionName, 
+                        functionCall.FunctionName,
                         functionCall.FunctionArguments.ToString());
-                    
+
                     chatMessages.Add(new ToolChatMessage(functionCall.Id, functionResult));
                 }
 
