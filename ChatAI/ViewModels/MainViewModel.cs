@@ -28,12 +28,19 @@ namespace ChatAI.ViewModels
             set => this.RaiseAndSetIfChanged(ref _conversationHistory, value);
         }
 
+        private bool _isLoading;
         private string _userInput = string.Empty;
 
         public string UserInput
         {
             get => _userInput;
             set => this.RaiseAndSetIfChanged(ref _userInput, value);
+        }
+
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set => this.RaiseAndSetIfChanged(ref _isLoading, value);
         }
 
         public ICommand SendMessageCommand { get; }
@@ -172,10 +179,10 @@ namespace ChatAI.ViewModels
                 {
                     contentBuilder.Append(contentChunk);
                     assistantMessage.Content = contentBuilder.ToString();
-                    
+
                     // 触发UI更新
                     this.RaisePropertyChanged(nameof(ConversationHistory));
-                    
+
                     // 添加小延迟以便用户能看到流式效果
                     await Task.Delay(50);
                 }
@@ -183,13 +190,13 @@ namespace ChatAI.ViewModels
             catch (Exception ex)
             {
                 Console.WriteLine($"处理用户输入时发生错误: {ex.Message}");
-                
+
                 // 如果流式失败，尝试普通请求
                 try
                 {
                     var messages = ConversationHistory.Take(ConversationHistory.Count - 1).ToList();
                     var response = await _apiClient!.CreateChatCompletionAsync(messages, "deepseek-chat", enableFunctions: true);
-                    
+
                     if (!string.IsNullOrEmpty(response))
                     {
                         var assistantMessage = ConversationHistory.LastOrDefault(m => m.Role == "assistant");

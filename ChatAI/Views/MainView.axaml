@@ -5,10 +5,10 @@
     xmlns:converters="using:ChatAI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="https://github.com/whistyun/Markdown.Avalonia"
     xmlns:models="using:ChatAI.Models"
     xmlns:vm="using:ChatAI.ViewModels"
     d:DesignHeight="450"
-	        xmlns:md="https://github.com/whistyun/Markdown.Avalonia"
     d:DesignWidth="600"
     x:DataType="vm:MainViewModel"
     mc:Ignorable="d">
@@ -23,20 +23,13 @@
 	</UserControl.Resources>
 
 	<UserControl.KeyBindings>
-		<KeyBinding Gesture="Enter" Command="{Binding SendMessageCommand}" />
+		<KeyBinding Command="{Binding SendMessageCommand}" Gesture="Enter" />
 	</UserControl.KeyBindings>
 
 	<UserControl.Styles>
 		<Style Selector="ListBoxItem">
-			<Setter Property="Background" Value="Transparent" />
-			<Setter Property="Padding" Value="0" />
-			<Setter Property="Margin" Value="0" />
-		</Style>
-		<Style Selector="ListBoxItem:selected">
-			<Setter Property="Background" Value="Transparent" />
-		</Style>
-		<Style Selector="ListBoxItem:selected /template/ ContentPresenter">
-			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="IsHitTestVisible" Value="False" />
+			<Setter Property="Focusable" Value="False" />
 		</Style>
 	</UserControl.Styles>
 
@@ -58,8 +51,7 @@
                                     FontSize="16"
                                     FontWeight="Bold"
                                     Text="{Binding Role}" />
-								<Line Width="100" Fill="Black" />
-								<md:MarkdownScrollViewer Markdown="{Binding Content}"/>
+								<md:MarkdownScrollViewer Markdown="{Binding Content}" />
 							</StackPanel>
 						</Border>
 					</DataTemplate>
@@ -84,7 +76,8 @@
                     Margin="5"
                     VerticalAlignment="Center"
                     Command="{Binding SendMessageCommand}"
-                    Content="Send" />
+                    Content="Send"
+                    IsEnabled="{Binding !IsLoading}" />
 			</Grid>
 		</Border>
 	</Grid>
