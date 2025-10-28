@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace FirstDemo.ViewModels
 {
-    public class MainViewModel:ViewModelBase
+    public class MainViewModel : ViewModelBase
     {
-
         public string Title { get; set; } = "sssssssss";
-
     }
 }
