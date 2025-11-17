@@ -1,5 +1,4 @@
-﻿using BenchmarkDotNet.Attributes;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Windows.Input;
 
