@@ -9,7 +9,18 @@
         <local:ViewLocator/>
     </Application.DataTemplates>
   
- 
+             <NativeMenu.Menu>
+                 <NativeMenu>
+                     <NativeMenuItem Header="Settings">
+                         <NativeMenu>
+                             <NativeMenuItem Header="Option 1"   />
+                             <NativeMenuItem Header="Option 2"   />
+                             <NativeMenuItemSeparator />
+                             <NativeMenuItem Header="Option 3"  />
+                         </NativeMenu>
+                     </NativeMenuItem>
+                 </NativeMenu>
+             </NativeMenu.Menu>
     <Application.Styles>
         <FluentTheme />
     </Application.Styles>
