@@ -12,36 +12,36 @@
     x:DataType="vm:MainViewModel"
     mc:Ignorable="d">
 
-    <Design.DataContext>
-        <vm:MainViewModel />
-    </Design.DataContext>
+	<Design.DataContext>
+		<vm:MainViewModel />
+	</Design.DataContext>
 
-    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,*">
-        <TextBlock
+	<Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,*">
+		<TextBlock
             x:Name="textBlock"
             Grid.Row="0"
             Grid.Column="1" />
-        <Button
+		<Button
             x:Name="button"
             Grid.Row="0"
             Grid.Column="0"
             Width="160"
             Height="80" />
 
-        <UniformGrid
+		<UniformGrid
             x:Name="uniformGrid"
             Grid.Row="1"
             Grid.Column="1"
             Columns="3">
-            <Button
+			<Button
                 Width="40"
                 Height=" 40"
                 Command="{Binding ShowGuidCommand}"
                 CommandParameter="{Binding Id}" />
-            <TextBlock Text="{Binding TextGuid, Mode=TwoWay}" />
-            <TextBlock Text="{Binding Username, Mode=TwoWay}" />
-            <view:RenamePopupUCView />
-        </UniformGrid>
-
-    </Grid>
+			<TextBlock Text="{Binding TextGuid, Mode=TwoWay}" />
+			<TextBlock Text="{Binding Username, Mode=TwoWay}" />
+			<view:RenamePopupUCView />
+			<Button Command="{Binding AddItemCommand}" Content="AddItem" />
+		</UniformGrid>
+	</Grid>
 </UserControl>

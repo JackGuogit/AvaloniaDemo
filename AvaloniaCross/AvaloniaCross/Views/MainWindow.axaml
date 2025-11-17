@@ -1,12 +1,25 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:AvaloniaCross.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="clr-namespace:AvaloniaCross.Views"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="AvaloniaCross.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="AvaloniaCross">
-        <views:MainView />
+<Window
+    x:Class="AvaloniaCross.Views.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:AvaloniaCross.Views"
+    xmlns:vm="using:AvaloniaCross.ViewModels"
+    Title="AvaloniaCross"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Icon="/Assets/avalonia-logo.ico"
+    mc:Ignorable="d">
+	<TabControl>
+		<TabItem Header="Home">
+			<TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Text="11111111" />
+		</TabItem>
+		<TabItem Header="Settings">
+			<TextBlock Text="Click to Set Greeting" />
+		</TabItem>
+	</TabControl>
 </Window>

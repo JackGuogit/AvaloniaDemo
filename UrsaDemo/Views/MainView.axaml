@@ -14,7 +14,7 @@
 	<UserControl.DataContext>
 		<vm:MainViewModel />
 	</UserControl.DataContext>
-	<TabControl>
+	<TabControl TabStripPlacement="Left">
 		<TabItem Header="Tab 1">
 			<vw:BreadcrumbView />
 		</TabItem>

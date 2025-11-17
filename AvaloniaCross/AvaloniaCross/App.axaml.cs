@@ -23,6 +23,7 @@ namespace AvaloniaCross
 
         public override void OnFrameworkInitializationCompleted()
         {
+            base.OnFrameworkInitializationCompleted();
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = new MainWindow
@@ -37,8 +38,6 @@ namespace AvaloniaCross
                     DataContext = new MainViewModel()
                 };
             }
-
-            base.OnFrameworkInitializationCompleted();
         }
 
         public override void RegisterServices()
