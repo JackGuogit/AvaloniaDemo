@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.10.35201.131
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11205.157 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstDemo", "FirstDemo\FirstDemo.csproj", "{D16A5C30-F95F-40B4-BCC1-B06208CD20A6}"
 EndProject
@@ -40,6 +40,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatAI", "ChatAI\ChatAI.csproj", "{169EC3BF-983C-4012-A1F3-8803250A1DDE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestElsa", "TestElsa\TestElsa.csproj", "{040CE034-B09F-4940-AEA9-387856AEEF68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaFormTest", "AvaloniaFormTest\AvaloniaFormTest.csproj", "{E0DAA3CC-B96B-40C0-B99E-60ED6B6F110D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -123,6 +125,10 @@ Global
 		{040CE034-B09F-4940-AEA9-387856AEEF68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{040CE034-B09F-4940-AEA9-387856AEEF68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{040CE034-B09F-4940-AEA9-387856AEEF68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0DAA3CC-B96B-40C0-B99E-60ED6B6F110D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0DAA3CC-B96B-40C0-B99E-60ED6B6F110D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0DAA3CC-B96B-40C0-B99E-60ED6B6F110D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0DAA3CC-B96B-40C0-B99E-60ED6B6F110D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
