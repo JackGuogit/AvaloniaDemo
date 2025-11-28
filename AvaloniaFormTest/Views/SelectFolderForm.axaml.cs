@@ -7,7 +7,7 @@ namespace AvaloniaFormTest;
 
 public partial class SelectFolderForm : Window
 {
-    public string SelecteFolderPath => FolderPath.Text;
+    public string SelecteFolderPath { get; set; } 
 
     public SelectFolderForm()
     {
@@ -36,9 +36,22 @@ public partial class SelectFolderForm : Window
             string folderPath = selectedFolder.Path.LocalPath;
             FolderPath.Text = folderPath;
         }
-        else;
+        else
         {
             FolderPath.Text = string.Empty;
         }
     }
+
+    private void Confirm_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        SelecteFolderPath= FolderPath.Text;
+        this.Close();
+    }
+
+    private void Cancel_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        SelecteFolderPath = string.Empty;
+        this.Close();
+    }
+
 }
